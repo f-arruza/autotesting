@@ -1,6 +1,6 @@
 # AUTOTESTING :: Herramienta para Automatización de Pruebas
 
-## **Nuestro equipo**
+## **Nuestro equipo** (Grupo #6)
 * Julián Picón (ja.picon@uniandes.edu.co)
 * Fabián Triana (wf.triana@uniandes.edu.co)
 * Fernando Arruza (f.arruza@uniandes.edu.co)
