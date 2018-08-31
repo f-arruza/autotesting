@@ -182,6 +182,8 @@ class Activity(models.Model):
                                   null=True, related_name='activities')
     test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
                                   null=True, related_name='activities')
+    input_url = models.CharField('Input Url', max_length=100, blank=True)
+    output_url = models.CharField('Output Url', max_length=100, blank=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):
