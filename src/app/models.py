@@ -153,7 +153,7 @@ class TestTool(models.Model):
                                        blank=True)
     container_desc = models.CharField('Container Descriptor', max_length=50,
                                       default='')
-    command = models.CharField('Command', max_length=100, blank=True)
+    command = models.CharField('Command', max_length=500, blank=True)
     source_path = models.CharField('Source Path', max_length=50, blank=True)
     template = models.FileField('Template Folder', null=True,
                                 upload_to=get_archivo_upload_path,
