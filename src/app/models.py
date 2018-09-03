@@ -1,3 +1,6 @@
+import os
+import uuid
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -19,7 +22,7 @@ class Project(models.Model):
 class Aplication(models.Model):
     type = (
         ('01', 'WEB'),
-        ('02', 'MOVIL')
+        ('02', 'MOBILE')
     )
 
     name = models.CharField('Name', max_length=100)
@@ -39,7 +42,6 @@ class Aplication(models.Model):
 
 
 class Browser(models.Model):
-    code = models.CharField('Code', max_length=10)
     name = models.CharField('Name', max_length=100)
     version = models.CharField('Version', max_length=10, default='0')
     active = models.BooleanField(default=True)
@@ -53,12 +55,11 @@ class Browser(models.Model):
 
 
 class TestType(models.Model):
-    code = models.CharField('Code', max_length=10)
     name = models.CharField('Name', max_length=100)
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.code + ' - ' + self.name
+        return self.name
 
     class Meta:
         db_table = 'testtype'
@@ -66,13 +67,12 @@ class TestType(models.Model):
 
 
 class OperatingSystem(models.Model):
-    code = models.CharField('Code', max_length=10)
     name = models.CharField('Name', max_length=100)
     version = models.CharField('Version', max_length=10)
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.code + ' - ' + self.name + ' :: ' + self.version
+        return self.name + ' :: ' + self.version
 
     class Meta:
         db_table = 'operating_systems'
@@ -80,7 +80,6 @@ class OperatingSystem(models.Model):
 
 
 class Device(models.Model):
-    code = models.CharField('Code', max_length=10)
     name = models.CharField('Name', max_length=100)
     active = models.BooleanField(default=True)
 
@@ -93,7 +92,8 @@ class Device(models.Model):
 
 
 class WebEnvironment(models.Model):
-    code = models.CharField('Code', max_length=10)
+    code = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                            editable=False)
     name = models.CharField('Name', max_length=200)
     browser = models.ForeignKey(Browser, on_delete=models.CASCADE,
                                 null=True, related_name='web_environments')
@@ -109,13 +109,14 @@ class WebEnvironment(models.Model):
         verbose_name_plural = '08. Web Environments'
 
 
-class MovilEnvironment(models.Model):
-    code = models.CharField('Code', max_length=10)
+class MobileEnvironment(models.Model):
+    code = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                            editable=False)
     name = models.CharField('Name', max_length=200)
     os = models.ForeignKey(OperatingSystem, on_delete=models.CASCADE,
-                           related_name='movil_environments')
+                           related_name='mobile_environments')
     device = models.ForeignKey(Device, on_delete=models.CASCADE,
-                               related_name='movil_environments')
+                               related_name='mobile_environments')
     container = models.CharField('Container', max_length=50, default='')
     active = models.BooleanField(default=True)
 
@@ -123,20 +124,40 @@ class MovilEnvironment(models.Model):
         return self.code + ' - ' + self.name
 
     class Meta:
-        db_table = 'movil_environment'
-        verbose_name_plural = '09. Movil Environments'
+        db_table = 'mobile_environment'
+        verbose_name_plural = '09. Mobile Environments'
+
+
+def get_archivo_upload_path(instance, filename):
+    return "templates/{}.PDF".format(instance.id)
+
+
+def validate_file_extension(value):
+    ext = os.path.splitext(value.name)[1]
+    valid_extensions = ['.zip']
+
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Solo se admiten archivos ZIP')
 
 
 class TestTool(models.Model):
-    code = models.CharField('Code', max_length=10)
+    code = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                            editable=False)
     name = models.CharField('Name', max_length=200)
     version = models.CharField('Version', max_length=10, default='0')
     type = models.ForeignKey(TestType, on_delete=models.CASCADE,
                              related_name='testtools')
     browser = models.ForeignKey(Browser, on_delete=models.CASCADE,
                                 related_name='testtools', null=True)
-    container = models.CharField('Container', max_length=50, default='')
+    container_label = models.CharField('Container Label', max_length=50,
+                                       blank=True)
+    container_desc = models.CharField('Container Descriptor', max_length=50,
+                                      default='')
     command = models.CharField('Command', max_length=100, blank=True)
+    source_path = models.CharField('Source Path', max_length=50, blank=True)
+    template = models.FileField('Template Folder', null=True,
+                                upload_to=get_archivo_upload_path,
+                                validators=[validate_file_extension])
     active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -169,11 +190,13 @@ class Activity(models.Model):
         ('02', 'Run Tests')
     )
 
+    code = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                            editable=False)
     name = models.CharField('Name', max_length=200)
     type = models.CharField('Type', max_length=2, choices=type, default='02')
     execution_datetime = models.DateTimeField('Execution datetime')
-    movil_environments = models.ManyToManyField(MovilEnvironment, null=True,
-                                                blank=True)
+    mobile_environments = models.ManyToManyField(MobileEnvironment, null=True,
+                                                 blank=True)
     web_environments = models.ManyToManyField(WebEnvironment, null=True,
                                               blank=True)
     parallel_execution = models.BooleanField(default=True)
@@ -182,7 +205,9 @@ class Activity(models.Model):
                                   null=True, related_name='activities')
     test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
                                   null=True, related_name='activities')
-    input_url = models.CharField('Input Url', max_length=100, blank=True)
+    testsuite = models.FileField('Test Suite', null=True,
+                                 upload_to=get_archivo_upload_path,
+                                 validators=[validate_file_extension])
     output_url = models.CharField('Output Url', max_length=100, blank=True)
     active = models.BooleanField(default=True)
 
