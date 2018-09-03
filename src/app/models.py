@@ -129,7 +129,7 @@ class MobileEnvironment(models.Model):
 
 
 def get_archivo_upload_path(instance, filename):
-    return "templates/{}.PDF".format(instance.id)
+    return "templates/{}.PDF".format(instance.code)
 
 
 def validate_file_extension(value):
