@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="41.76199999999999" tests="5" failures="0">
-  <testsuite name="Root Suite" timestamp="2018-09-02T21:22:44" tests="0" failures="0" time="0">
+<testsuites name="Mocha Tests" time="39.278999999999996" tests="5" failures="0">
+  <testsuite name="Root Suite" timestamp="2018-09-04T15:19:05" tests="0" failures="0" time="0">
   </testsuite>
-  <testsuite name="losestudiantes.co" timestamp="2018-09-02T21:22:44" tests="5" failures="0" time="41.76199999999999">
-    <testcase name="losestudiantes.co Buscar profesor." time="5.662" classname="Buscar profesor.">
+  <testsuite name="losestudiantes.co" timestamp="2018-09-04T15:19:05" tests="5" failures="0" time="39.278999999999996">
+    <testcase name="losestudiantes.co Buscar profesor." time="4.851" classname="Buscar profesor.">
     </testcase>
-    <testcase name="losestudiantes.co Filtrar comentarios por materia." time="8.369" classname="Filtrar comentarios por materia.">
+    <testcase name="losestudiantes.co Filtrar comentarios por materia." time="8.052" classname="Filtrar comentarios por materia.">
     </testcase>
-    <testcase name="losestudiantes.co Visitar Los estudiantes y registrar nueva cuenta." time="14.995" classname="Visitar Los estudiantes y registrar nueva cuenta.">
+    <testcase name="losestudiantes.co Visitar Los estudiantes y registrar nueva cuenta." time="13.882" classname="Visitar Los estudiantes y registrar nueva cuenta.">
     </testcase>
-    <testcase name="losestudiantes.co Visitar Los estudiantes y registrar nueva cuenta." time="7.854" classname="Visitar Los estudiantes y registrar nueva cuenta.">
+    <testcase name="losestudiantes.co Visitar Los estudiantes y registrar nueva cuenta." time="7.303" classname="Visitar Los estudiantes y registrar nueva cuenta.">
     </testcase>
-    <testcase name="losestudiantes.co Ingresar a página del profesor." time="4.882" classname="Ingresar a página del profesor.">
+    <testcase name="losestudiantes.co Ingresar a página del profesor." time="5.191" classname="Ingresar a página del profesor.">
     </testcase>
   </testsuite>
 </testsuites>
