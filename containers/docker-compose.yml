@@ -14,7 +14,6 @@ services:
       build:
         context: ./dockerfiles/WebdriverIO_Chrome_Firefox
         dockerfile: Dockerfile
-      image: huli/webdriverio
       depends_on:
           - chrome
           - firefox
