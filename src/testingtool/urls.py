@@ -10,8 +10,8 @@ from rest_framework_simplejwt.views import (
 from testingtool.swagger import schema_view
 
 urlpatterns = [
-    path('', schema_view),
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
+    path('docs/', schema_view),
     path('api/v1/token/', TokenObtainPairView.as_view(),
          name='token_obtain_pair'),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(),
@@ -21,9 +21,9 @@ urlpatterns = [
     path('api/v1/', include('app.urls')),
 ]
 
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += [
-        path('__debug__/', include(debug_toolbar.urls)),
-        path('api-auth/', include('rest_framework.urls')),
-    ]
+# if settings.DEBUG:
+#     import debug_toolbar
+#     urlpatterns += [
+#         path('__debug__/', include(debug_toolbar.urls)),
+#         path('api-auth/', include('rest_framework.urls')),
+#     ]

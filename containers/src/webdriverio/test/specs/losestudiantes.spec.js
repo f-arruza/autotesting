@@ -26,7 +26,7 @@ describe('los estudiantes login', function() {
         passwordInput.click();
         passwordInput.keys('1234');
 
-        cajaLogIn.element('button=Ingresar').click()
+        cajaLogIn.element('.logInButton').click()
         browser.waitForVisible('.aviso.alert.alert-danger', 5000);
 
         var alertText = browser.element('.aviso.alert.alert-danger').getText();

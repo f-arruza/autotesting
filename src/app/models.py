@@ -19,7 +19,7 @@ class Project(models.Model):
         verbose_name_plural = '01. Projects'
 
 
-class Aplication(models.Model):
+class Application(models.Model):
     type = (
         ('01', 'WEB'),
         ('02', 'MOBILE')
@@ -44,6 +44,9 @@ class Aplication(models.Model):
 class Browser(models.Model):
     name = models.CharField('Name', max_length=100)
     version = models.CharField('Version', max_length=10, default='0')
+    label = models.CharField('Label', max_length=50, blank=True, default='')
+    template = models.CharField('Template', max_length=50, blank=True,
+                                default='')
     active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -92,8 +95,6 @@ class Device(models.Model):
 
 
 class WebEnvironment(models.Model):
-    code = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                            editable=False)
     name = models.CharField('Name', max_length=200)
     browser = models.ForeignKey(Browser, on_delete=models.CASCADE,
                                 null=True, related_name='web_environments')
@@ -102,7 +103,7 @@ class WebEnvironment(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.code + ' - ' + self.name
+        return self.id + ' - ' + self.name
 
     class Meta:
         db_table = 'web_environment'
@@ -110,8 +111,6 @@ class WebEnvironment(models.Model):
 
 
 class MobileEnvironment(models.Model):
-    code = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                            editable=False)
     name = models.CharField('Name', max_length=200)
     os = models.ForeignKey(OperatingSystem, on_delete=models.CASCADE,
                            related_name='mobile_environments')
@@ -121,7 +120,7 @@ class MobileEnvironment(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.code + ' - ' + self.name
+        return self.id + ' - ' + self.name
 
     class Meta:
         db_table = 'mobile_environment'
@@ -129,10 +128,18 @@ class MobileEnvironment(models.Model):
 
 
 def get_archivo_upload_path(instance, filename):
-    return "templates/{}.PDF".format(instance.code)
+    return "resources/{}.zip".format(instance.code)
 
 
-def validate_file_extension(value):
+def get_descriptor_upload_path(instance, filename):
+    return "descriptors/{}.yml".format(instance.code)
+
+
+def get_test_suite_upload_path(instance, filename):
+    return "test_suites/{}.zip".format(instance.code)
+
+
+def validate_file_extension_zip(value):
     ext = os.path.splitext(value.name)[1]
     valid_extensions = ['.zip']
 
@@ -140,28 +147,41 @@ def validate_file_extension(value):
         raise ValidationError('Solo se admiten archivos ZIP')
 
 
+def validate_file_extension_yml(value):
+    ext = os.path.splitext(value.name)[1]
+    valid_extensions = ['.yml']
+
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Solo se admiten archivos YML')
+
+
 class TestTool(models.Model):
-    code = models.UUIDField(primary_key=True, default=uuid.uuid4,
+    code = models.UUIDField(primary_key=False, default=uuid.uuid4,
                             editable=False)
     name = models.CharField('Name', max_length=200)
     version = models.CharField('Version', max_length=10, default='0')
     type = models.ForeignKey(TestType, on_delete=models.CASCADE,
                              related_name='testtools')
-    browser = models.ForeignKey(Browser, on_delete=models.CASCADE,
-                                related_name='testtools', null=True)
+    browser_included = models.BooleanField(default=False)
+    browsers = models.ManyToManyField(Browser, null=True, blank=True)
     container_label = models.CharField('Container Label', max_length=50,
                                        blank=True)
     container_desc = models.CharField('Container Descriptor', max_length=50,
                                       default='')
-    command = models.CharField('Command', max_length=500, blank=True)
+    command = models.TextField('Command', max_length=500, blank=True)
     source_path = models.CharField('Source Path', max_length=50, blank=True)
-    template = models.FileField('Template Folder', null=True,
-                                upload_to=get_archivo_upload_path,
-                                validators=[validate_file_extension])
+    template = models.CharField('Template', max_length=50, blank=True,
+                                default='')
+    template_common = models.CharField('Common Template', max_length=50,
+                                       blank=True, default='')
+    descriptor_file = models.FileField(
+                                    'Descriptor File', null=True,
+                                    upload_to=get_archivo_upload_path,
+                                    validators=[validate_file_extension_zip])
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name + ' - ' + self.type.name + ' - ' + str(self.browser)
+        return self.name + ' - ' + self.type.name
 
     class Meta:
         db_table = 'testtool'
@@ -169,11 +189,18 @@ class TestTool(models.Model):
 
 
 class TestPlan(models.Model):
+    code = models.UUIDField(primary_key=False, default=uuid.uuid4,
+                            editable=False)
     name = models.CharField('Name', max_length=200)
     stakeholders = models.ManyToManyField(User)
 
-    application = models.ForeignKey(Aplication, on_delete=models.CASCADE,
+    application = models.ForeignKey(Application, on_delete=models.CASCADE,
                                     related_name='testplans')
+    descriptor_file = models.FileField(
+                                    'Descriptor File', null=True,
+                                    blank=True,
+                                    upload_to=get_descriptor_upload_path,
+                                    validators=[validate_file_extension_yml])
     active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -184,13 +211,31 @@ class TestPlan(models.Model):
         verbose_name_plural = '10. TestPlans'
 
 
+class Release(models.Model):
+    code = models.UUIDField(primary_key=False, default=uuid.uuid4,
+                            editable=False)
+    datetime = models.DateTimeField(auto_now_add=True)
+    test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
+                                  related_name='releases')
+    testsuite = models.FileField('Test Suite', null=True,
+                                 upload_to=get_test_suite_upload_path,
+                                 validators=[validate_file_extension_zip])
+
+    def __str__(self):
+        return str(self.datetime) + ' - ' + str(self.test_plan)
+
+    class Meta:
+        db_table = 'testplan_release'
+        verbose_name_plural = '12. Releases'
+
+
 class Activity(models.Model):
     type = (
         ('01', 'Generate Tests'),
         ('02', 'Run Tests')
     )
 
-    code = models.UUIDField(primary_key=True, default=uuid.uuid4,
+    code = models.UUIDField(primary_key=False, default=uuid.uuid4,
                             editable=False)
     name = models.CharField('Name', max_length=200)
     type = models.CharField('Type', max_length=2, choices=type, default='02')
@@ -200,14 +245,14 @@ class Activity(models.Model):
     web_environments = models.ManyToManyField(WebEnvironment, null=True,
                                               blank=True)
     parallel_execution = models.BooleanField(default=True)
-
+    command = models.CharField('Command', max_length=500, blank=True)
     test_tool = models.ForeignKey(TestTool, on_delete=models.CASCADE,
-                                  null=True, related_name='activities')
+                                  related_name='activities')
     test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
-                                  null=True, related_name='activities')
+                                  related_name='activities')
     testsuite = models.FileField('Test Suite', null=True,
-                                 upload_to=get_archivo_upload_path,
-                                 validators=[validate_file_extension])
+                                 upload_to=get_test_suite_upload_path,
+                                 validators=[validate_file_extension_zip])
     output_url = models.CharField('Output Url', max_length=100, blank=True)
     active = models.BooleanField(default=True)
 

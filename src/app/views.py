@@ -7,16 +7,105 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
 from rest_framework import views
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import get_object_or_404, GenericAPIView
 from rest_framework.decorators import permission_classes
 
 from validate_email import validate_email
 
 from app.tasks import send_email_password_reset
+from app.models import (Project, Application, Browser, TestType, Device,
+                        OperatingSystem, WebEnvironment, MobileEnvironment,
+                        TestTool, TestPlan, Activity, Release)
+from app.serializers import (ProjectSerializer, ApplicationSerializer,
+                             BrowserSerializer, TestTypeSerializer,
+                             DeviceSerializer, OperatingSystemSerializer,
+                             WebEnvironmentSerializer, TestToolSerializer,
+                             MobileEnvironmentSerializer, TestPlanSerializer,
+                             ActivitySerializer, ReleaseSerializer)
+from app.utilities import generate_deploy_descriptor
 
 
-# Create your views here.
+# CRUD
+class ProjectViewSet(viewsets.ModelViewSet):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
+
+
+class ApplicationViewSet(viewsets.ModelViewSet):
+    serializer_class = ApplicationSerializer
+    queryset = Application.objects.all()
+
+
+class BrowserViewSet(viewsets.ModelViewSet):
+    serializer_class = BrowserSerializer
+    queryset = Browser.objects.all()
+
+
+class TestTypeViewSet(viewsets.ModelViewSet):
+    serializer_class = TestTypeSerializer
+    queryset = TestType.objects.all()
+
+
+class DeviceViewSet(viewsets.ModelViewSet):
+    serializer_class = DeviceSerializer
+    queryset = Device.objects.all()
+
+
+class OperatingSystemViewSet(viewsets.ModelViewSet):
+    serializer_class = OperatingSystemSerializer
+    queryset = OperatingSystem.objects.all()
+
+
+class WebEnvironmentViewSet(viewsets.ModelViewSet):
+    serializer_class = WebEnvironmentSerializer
+    queryset = WebEnvironment.objects.all()
+
+
+class MobileEnvironmentViewSet(viewsets.ModelViewSet):
+    serializer_class = MobileEnvironmentSerializer
+    queryset = MobileEnvironment.objects.all()
+
+
+class TestToolViewSet(viewsets.ModelViewSet):
+    serializer_class = TestToolSerializer
+    queryset = TestTool.objects.all()
+
+
+class TestPlanViewSet(viewsets.ModelViewSet):
+    serializer_class = TestPlanSerializer
+    queryset = TestPlan.objects.all()
+
+
+class ActivityViewSet(viewsets.ModelViewSet):
+    serializer_class = ActivitySerializer
+    queryset = Activity.objects.all()
+
+
+class ReleaseViewSet(viewsets.ModelViewSet):
+    serializer_class = ReleaseSerializer
+    queryset = Release.objects.all()
+
+
+class DescriptorView(views.APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, *args, **kwargs):
+        return JsonResponse('DONE!!!', safe=False)
+
+    def post(self, request, *args, **kwargs):
+        testplan_id = self.kwargs['id']
+
+        test_plan = get_object_or_404(TestPlan, id=testplan_id)
+        content = generate_deploy_descriptor(test_plan)
+        result = {
+            "success": 'true',
+            "message": content,
+        }
+        return JsonResponse(result, safe=False)
+
+
 class PasswordResetView(views.APIView):
     '''
     Recuperar clave de acceso.

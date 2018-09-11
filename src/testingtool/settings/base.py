@@ -150,6 +150,3 @@ SIMPLE_JWT = {
 
 REDIS_HOST = os.environ['REDIS_HOST']
 REDIS_PORT = os.environ['REDIS_PORT']
-
-JET_SIDE_MENU_COMPACT = True
-JET_DEFAULT_THEME = 'light-gray'
