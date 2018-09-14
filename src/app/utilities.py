@@ -79,6 +79,7 @@ def compressFolderToZip(folder, data):
 
 
 def generate_deploy_folder(test_plan):
+    env = Environment(loader=PackageLoader('app'), autoescape=False)
     dir = '{}{}{}'.format(settings.BASE_DIR, '/tmp/', test_plan.code)
     if os.path.exists(dir):
         shutil.rmtree(dir)
@@ -140,9 +141,15 @@ def generate_deploy_folder(test_plan):
     shutil.copy(release, file_path_dest)
     obj.testsuite = '{}/{}.zip'.format('resources', str(obj.code))
     obj.save()
+
+    # Generar archivo de Deployment
+    deploy_tmp = env.get_template('deployment.tmp')
+    outfile = open('{}{}/{}.sh'.format(settings.MEDIA_ROOT, 'resources',
+                                       obj.code), "w")
+    outfile.write(deploy_tmp.render(release_code=obj.code))
+    obj.deployment_file = '{}/{}.sh'.format('resources', obj.code)
+    obj.save()
+
+    # Eliminar archivos temporales
     os.remove(release)
     shutil.rmtree(dir)
-
-
-# Commands for Autodeploy
-# docker-compose pull && docker-compose build

@@ -152,6 +152,14 @@ def validate_file_extension_yml(value):
         raise ValidationError('Solo se admiten archivos YML')
 
 
+def validate_file_extension_sh(value):
+    ext = os.path.splitext(value.name)[1]
+    valid_extensions = ['.sh']
+
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Solo se admiten archivos SH')
+
+
 class TestTool(models.Model):
     code = models.UUIDField(primary_key=False, default=uuid.uuid4,
                             editable=False)
@@ -217,6 +225,11 @@ class Release(models.Model):
     testsuite = models.FileField('Test Suite', null=True,
                                  upload_to=get_test_suite_upload_path,
                                  validators=[validate_file_extension_zip])
+    deployment_file = models.FileField(
+                                   'Deployment File', null=True,
+                                   blank=True,
+                                   upload_to=get_descriptor_upload_path,
+                                   validators=[validate_file_extension_sh])
 
     def __str__(self):
         return str(self.datetime) + ' - ' + str(self.test_plan)

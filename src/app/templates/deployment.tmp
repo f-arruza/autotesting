@@ -1,0 +1,18 @@
+#!/bin/bash
+# file: deployment.sh
+
+echo DESCARGAR PAQUETE DE CONFIGURACION PRUEBAS
+wget http://autotesting.ac-visiontech.com/media/resources/{{ release_code }}.zip
+
+echo DESCOMPRIMIR PAQUETE DE CONFIGURACION DE PRUEBAS
+unzip {{ release_code }}.zip
+
+echo INGRESAR A CARPETA
+cd {{ release_code }}
+
+echo DESCARGAR Y CONSTRUIR IMAGENES DE CONTENEDORES
+docker-compose pull
+docker-compose build
+
+echo LISTAR IMAGENES DE CONTENEDORES
+docker images
