@@ -6,7 +6,8 @@ from app.views import (ProjectViewSet, ApplicationViewSet, BrowserViewSet,
                        WebEnvironmentViewSet, MobileEnvironmentViewSet,
                        TestToolViewSet, TestPlanViewSet, ActivityViewSet,
                        PasswordResetView, PasswordChangeView,
-                       PasswordRedefineView, DescriptorView, ReleaseViewSet)
+                       PasswordRedefineView, DescriptorView, ReleaseViewSet,
+                       DeploymentViewSet)
 
 router = SimpleRouter()
 router.register(r'projects', ProjectViewSet)
@@ -21,6 +22,7 @@ router.register(r'testtools', TestToolViewSet)
 router.register(r'testplans', TestPlanViewSet)
 router.register(r'activities', ActivityViewSet)
 router.register(r'releases', ReleaseViewSet)
+router.register(r'deployments', DeploymentViewSet)
 
 urlpatterns = [
     path('descriptors/<int:id>/', DescriptorView.as_view(),

@@ -4,7 +4,7 @@ from rest_framework.generics import get_object_or_404
 from app.models import (Project, Application, Browser, TestType,
                         OperatingSystem, Device, WebEnvironment,
                         MobileEnvironment,  TestTool, Activity, TestPlan,
-                        Release)
+                        Release, Deployment)
 from app.utilities import generate_deploy_descriptor, generate_deploy_folder
 
 
@@ -40,7 +40,11 @@ class DeviceAdmin(admin.ModelAdmin):
 
 @admin.register(WebEnvironment)
 class WebEnvironmentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'browser', 'active',)
+    list_display = ('id', 'resolution', 'active',)
+
+    def resolution(self, obj):
+        return '{}x{}'.format(obj.screen_width, obj.screen_high)
+    resolution.admin_order_field = 'screen_width'
 
 
 @admin.register(MobileEnvironment)
@@ -95,3 +99,8 @@ class TestPlanAdmin(admin.ModelAdmin):
 @admin.register(Release)
 class ReleaseAdmin(admin.ModelAdmin):
     list_display = ('code', 'datetime', 'test_plan',)
+
+
+@admin.register(Deployment)
+class DeploymentAdmin(admin.ModelAdmin):
+    list_display = ('code', 'hostname', 'test_plan',)

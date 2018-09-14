@@ -95,15 +95,12 @@ class Device(models.Model):
 
 
 class WebEnvironment(models.Model):
-    name = models.CharField('Name', max_length=200)
-    browser = models.ForeignKey(Browser, on_delete=models.CASCADE,
-                                null=True, related_name='web_environments')
     screen_high = models.PositiveIntegerField('Screen High', default=600)
     screen_width = models.PositiveIntegerField('Screen Width', default=800)
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.id + ' - ' + self.name
+        return '{}x{}'.format(self.screen_width, self.screen_high)
 
     class Meta:
         db_table = 'web_environment'
@@ -227,6 +224,25 @@ class Release(models.Model):
     class Meta:
         db_table = 'testplan_release'
         verbose_name_plural = '12. Releases'
+
+
+class Deployment(models.Model):
+    code = models.UUIDField(primary_key=False, default=uuid.uuid4,
+                            editable=False)
+    hostname = models.CharField('Hostname', max_length=30, blank=True)
+    username = models.CharField('Username', max_length=30)
+    password = models.CharField('Password', max_length=30)
+    command = models.TextField('Command', max_length=500, blank=True)
+    path = models.CharField('Path', max_length=30, blank=True)
+    test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
+                                  related_name='deployments')
+
+    def __str__(self):
+        return str(self.ip_address) + ' - ' + str(self.test_plan)
+
+    class Meta:
+        db_table = 'testplan_deployment'
+        verbose_name_plural = '13. Deployments'
 
 
 class Activity(models.Model):

@@ -1,5 +1,0 @@
-FROM cypress/browsers:chrome67-ff57
-RUN npm i cypress
-RUN firefox --version
-RUN $(npm bin)/cypress run --browser chrome
-RUN $(npm bin)/cypress run --browser firefox

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from app.models import (Project, Application, Browser, TestType, Device,
                         OperatingSystem, WebEnvironment, MobileEnvironment,
-                        TestTool, TestPlan, Activity, Release)
+                        TestTool, TestPlan, Activity, Release, Deployment)
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -73,4 +73,10 @@ class ActivitySerializer(serializers.ModelSerializer):
 class ReleaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Release
+        fields = '__all__'
+
+
+class DeploymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Deployment
         fields = '__all__'

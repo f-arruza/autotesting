@@ -17,13 +17,14 @@ from validate_email import validate_email
 from app.tasks import send_email_password_reset
 from app.models import (Project, Application, Browser, TestType, Device,
                         OperatingSystem, WebEnvironment, MobileEnvironment,
-                        TestTool, TestPlan, Activity, Release)
+                        TestTool, TestPlan, Activity, Release, Deployment)
 from app.serializers import (ProjectSerializer, ApplicationSerializer,
                              BrowserSerializer, TestTypeSerializer,
                              DeviceSerializer, OperatingSystemSerializer,
                              WebEnvironmentSerializer, TestToolSerializer,
                              MobileEnvironmentSerializer, TestPlanSerializer,
-                             ActivitySerializer, ReleaseSerializer)
+                             ActivitySerializer, ReleaseSerializer,
+                             DeploymentSerializer)
 from app.utilities import generate_deploy_descriptor
 
 
@@ -86,6 +87,11 @@ class ActivityViewSet(viewsets.ModelViewSet):
 class ReleaseViewSet(viewsets.ModelViewSet):
     serializer_class = ReleaseSerializer
     queryset = Release.objects.all()
+
+
+class DeploymentViewSet(viewsets.ModelViewSet):
+    serializer_class = DeploymentSerializer
+    queryset = Deployment.objects.all()
 
 
 class DescriptorView(views.APIView):
