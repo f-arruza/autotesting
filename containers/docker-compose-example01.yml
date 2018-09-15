@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+
+  cypress:
+    build:
+      context: ./dockerfiles/Cypress_Electron_Chrome67
+      dockerfile: Dockerfile
+    command: /node_modules/cypress/bin/cypress run --project '/test' --browser chrome --reporter junit --reporter-options "mochaFile=results/output.xml,toConsole=true"
+    volumes:
+      - ./src/cypress:/test
+
+  webdriverio:
+      build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+      depends_on:
+          - chrome
+          - firefox
+          - hub
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
+      volumes:
+          - ./src/webdriverio:/app
+
+  hub:
+      image: selenium/hub
+      ports:
+          - 4444:4444
+
+  firefox:
+      image: selenium/node-firefox
+      ports:
+          - 5900
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
+      depends_on:
+          - hub
+
+  chrome:
+      image: selenium/node-chrome
+      ports:
+          - 5900
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
+      depends_on:
+          - hub

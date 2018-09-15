@@ -1,4 +1,4 @@
 hub:
     image: selenium/hub
     ports:
-        - 8080:4444
+        - 8081:4444

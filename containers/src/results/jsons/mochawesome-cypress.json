@@ -1,0 +1,78 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2018-09-14T00:41:09.365Z",
+    "end": "2018-09-14T00:41:18.444Z",
+    "duration": 9079,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false,
+    "passPercentClass": "success",
+    "pendingPercentClass": "danger"
+  },
+  "suites": {
+    "uuid": "6ab380d2-05fd-4f1f-b399-fa96e5aa1366",
+    "title": "",
+    "fullFile": "",
+    "file": "",
+    "beforeHooks": [],
+    "afterHooks": [],
+    "tests": [],
+    "suites": [
+      {
+        "uuid": "1985eee2-6d14-47d0-a9d4-ffdd2ffead47",
+        "title": "Los estudiantes login",
+        "fullFile": "",
+        "file": "",
+        "beforeHooks": [],
+        "afterHooks": [],
+        "tests": [
+          {
+            "title": "Visits los estudiantes and fails at login",
+            "fullTitle": "Los estudiantes login Visits los estudiantes and fails at login",
+            "duration": 5437,
+            "state": "passed",
+            "speed": "slow",
+            "pass": true,
+            "fail": false,
+            "pending": false,
+            "code": "cy.visit('https://losestudiantes.co');",
+            "err": {},
+            "isRoot": false,
+            "uuid": "aaf3300d-856a-4b11-b548-deb75197f7a9",
+            "isHook": false,
+            "skipped": false
+          }
+        ],
+        "suites": [],
+        "passes": [
+          "aaf3300d-856a-4b11-b548-deb75197f7a9"
+        ],
+        "failures": [],
+        "pending": [],
+        "skipped": [],
+        "duration": 5437,
+        "root": false,
+        "rootEmpty": false,
+        "_timeout": 2000
+      }
+    ],
+    "passes": [],
+    "failures": [],
+    "pending": [],
+    "skipped": [],
+    "duration": 0,
+    "root": true,
+    "rootEmpty": true,
+    "_timeout": 2000
+  },
+  "copyrightYear": 2018
+}
