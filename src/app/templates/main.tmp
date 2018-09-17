@@ -4,3 +4,10 @@ services:
 {% for tool in tools %}
   {{ tool.descriptor }}
 {% endfor %}
+  report_builder:
+    build:
+        context: ./dockerfiles/Report_Builder
+        dockerfile: Dockerfile
+    command: node scripts/test.js
+    volumes:
+        - ./src/results:/data

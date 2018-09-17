@@ -43,9 +43,12 @@ def generate_deploy_descriptor(test_plan):
             browsers = []
             for browser in test_tool.browsers.filter(active=True):
                 browsers.append(browser.label)
-                tmp_browser = env.get_template(browser.template)
-                tools.append({'descriptor': tmp_browser.render()})
 
+                if browser.label not in commons:
+                    commons[browser.label] = True
+                    tmp_browser = env.get_template(browser.template)
+                    tools.append({'descriptor': tmp_browser.render()})
+            print(commons)
             descriptor = template.render(
                                     container_label=test_tool.container_label,
                                     container_desc=test_tool.container_desc,
@@ -95,6 +98,17 @@ def generate_deploy_folder(test_plan):
     dockerfiles = '{}{}'.format(dir, '/dockerfiles')
     os.makedirs(dockerfiles)
 
+    # Descargar configuración de ReportBuilder
+    file_path_src = os.path.join(settings.BASE_DIR, 'resources',
+                                 'Report_Builder.zip')
+    file_path_dest = os.path.join(dockerfiles, 'Report_Builder.zip')
+    shutil.copy(file_path_src, file_path_dest)
+
+    zip_ref = zipfile.ZipFile(file_path_dest, 'r')
+    zip_ref.extractall(dockerfiles)
+    zip_ref.close()
+    os.remove(file_path_dest)
+
     for activity in test_plan.activities.filter(active=True):
         test_tool = activity.test_tool
         if not activity.test_tool.active:
@@ -136,18 +150,18 @@ def generate_deploy_folder(test_plan):
     obj = Release.objects.create(test_plan=test_plan)
     obj.save()
 
-    file_path_dest = os.path.join(settings.MEDIA_ROOT, 'resources',
+    file_path_dest = os.path.join(settings.MEDIA_ROOT, 'releases',
                                   str(obj.code) + '.zip')
     shutil.copy(release, file_path_dest)
-    obj.testsuite = '{}/{}.zip'.format('resources', str(obj.code))
+    obj.testsuite = '{}/{}.zip'.format('releases', str(obj.code))
     obj.save()
 
     # Generar archivo de Deployment
     deploy_tmp = env.get_template('deployment.tmp')
-    outfile = open('{}{}/{}.sh'.format(settings.MEDIA_ROOT, 'resources',
+    outfile = open('{}{}/{}.sh'.format(settings.MEDIA_ROOT, 'releases',
                                        obj.code), "w")
     outfile.write(deploy_tmp.render(release_code=obj.code))
-    obj.deployment_file = '{}/{}.sh'.format('resources', obj.code)
+    obj.deployment_file = '{}/{}.sh'.format('releases', obj.code)
     obj.save()
 
     # Eliminar archivos temporales

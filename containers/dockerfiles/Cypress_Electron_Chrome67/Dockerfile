@@ -28,12 +28,13 @@ RUN google-chrome --version
 RUN zip --version
 RUN git --version
 
-RUN npm i cypress
-
-# a few environment variables to make NPM installs easier
-# good colors for most applications
 ENV TERM xterm
-# avoid million NPM install messages
 ENV npm_config_loglevel warn
-# allow installing when the main user is root
 ENV npm_config_unsafe_perm true
+
+ENV NODE_PATH /install/node_modules/
+ENV PATH /install/node_modules/.bin:$PATH
+
+COPY package.json /install/package.json
+WORKDIR /install/
+RUN npm install --quiet

@@ -1,0 +1,10 @@
+{
+  "name": "Cypress",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "mocha": "^5.2.0",
+    "mocha-junit-reporter": "^1.18.0",
+    "mochawesome": "^3.0.3"
+  }
+}

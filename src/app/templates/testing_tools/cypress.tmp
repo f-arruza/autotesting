@@ -5,3 +5,4 @@
     command: {{ command }}
     volumes:
         - {{ source_path }}:/test
+        - ./src/results/jsons:/reports

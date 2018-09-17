@@ -1,1 +1,10 @@
-{}
+{
+  "reporter": "mochawesome",
+  "reporterOptions": {
+    "reportDir": "/reports",
+    "reportFilename": "cypress-headless-testing.json",
+    "quiet": true,
+    "html": false,
+    "json": true
+  }
+}

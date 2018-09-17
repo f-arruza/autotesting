@@ -10,6 +10,7 @@
     "mocha": "3",
     "sinon": "1",
     "wdio-mocha-framework": "0",
+    "wdio-mochawesome-reporter": "^2.0.1",
     "wdio-jasmine-framework": "^0.3.6",
     "wdio-spec-reporter": "0",
     "wdio-selenium-standalone-service": "0.0.10",

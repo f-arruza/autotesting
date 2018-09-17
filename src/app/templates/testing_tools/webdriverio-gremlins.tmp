@@ -1,0 +1,13 @@
+{{ container_label }}:
+    build:
+        context: ./dockerfiles/{{ container_desc }}
+        dockerfile: Dockerfile
+    depends_on:
+        - hub{% for browser in browsers %}
+        - {{ browser }}{% endfor %}
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    volumes:
+        - .{{ source_path }}:/app
+        - ./src/results/jsons:/reports
