@@ -282,7 +282,6 @@ class Activity(models.Model):
     testsuite = models.FileField('Test Suite', null=True,
                                  upload_to=get_test_suite_upload_path,
                                  validators=[validate_file_extension_zip])
-    output_url = models.CharField('Output Url', max_length=100, blank=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):

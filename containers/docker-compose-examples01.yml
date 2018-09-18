@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+
+  cypress:
+    build:
+      context: ./dockerfiles/Cypress_Electron_Chrome67
+      dockerfile: Dockerfile
+    command: cypress run --browser chrome --project /test
+    volumes:
+      - ./src/cypress:/test
+      - ./src/results/jsons:/reports
+
+  report_builder:
+    build:
+      context: ./dockerfiles/Report_Builder
+      dockerfile: Dockerfile
+    command: node scripts/test.js
+    volumes:
+      - ./src/results:/data
+
+  webdriverio:
+      build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+      depends_on:
+          - chrome
+          - firefox
+          - hub
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
+      volumes:
+          - ./src/webdriverio:/app
+          - ./src/results/jsons:/reports
+
+  webdriverio-gremlins:
+      build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+      depends_on:
+          - chrome
+          - hub
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
+      volumes:
+          - ./src/webdriverio-gremlins:/app
+          - ./src/results/jsons:/reports
+
+  hub:
+      image: selenium/hub
+      ports:
+          - 4444:4444
+
+  firefox:
+      image: selenium/node-firefox
+      ports:
+          - 5900
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
+      depends_on:
+          - hub
+
+  chrome:
+      image: selenium/node-chrome
+      ports:
+          - 5900
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
+      depends_on:
+          - hub
