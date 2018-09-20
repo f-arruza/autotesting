@@ -48,6 +48,20 @@ services:
           - ./src/webdriverio-gremlins:/app
           - ./src/results/jsons:/reports
 
+  webdriverio-cucumber:
+      build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+      depends_on:
+          - chrome
+          - hub
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
+      volumes:
+          - ./src/webdriverio-cucumber:/app
+          - ./src/results/jsons:/reports
+
   hub:
       image: selenium/hub
       ports:

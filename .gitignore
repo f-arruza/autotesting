@@ -88,6 +88,9 @@ local_settings.py
 
 src/testingtool/static/
 src/testingtool/media/
+containers/emulator-android/app-release/*
+containers/emulator-android/video-nexus_5.1.1/*
+containers/emulator-android/video-samsung_7.1.1/*
 pgdata/
 src/*/migrations/0*
 .vscode/
