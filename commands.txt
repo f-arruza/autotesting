@@ -1,0 +1,8 @@
+docker-compose run --rm cypress-chrome
+docker-compose run --rm cypress-electron
+docker-compose run --rm webdriverio wdio
+docker-compose run --rm webdriverio-gremlins wdio
+docker-compose run --rm webdriverio-cucumber wdio
+docker-compose run --rm report_builder
+
+cp -R src/results/reports/ /home/SIS/f.arruza/

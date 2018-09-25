@@ -9,5 +9,5 @@
         - HUB_PORT_4444_TCP_ADDR=hub
         - HUB_PORT_4444_TCP_PORT=4444
     volumes:
-        - .{{ source_path }}:/app
+        - {{ source_path }}:/app
         - ./src/results/jsons:/reports
