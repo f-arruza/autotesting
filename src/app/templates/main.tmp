@@ -5,20 +5,20 @@ services:
   {{ tool.descriptor }}
 {% endfor %}
   report_builder:
-      build:
-          context: ./dockerfiles/Report_Builder
-          dockerfile: Dockerfile
-      command: node scripts/test.js
-      depends_on:
-          - nginx
-      volumes:
-          - ./src/results:/data
+    build:
+        context: ./dockerfiles/Report_Builder
+        dockerfile: Dockerfile
+    command: node scripts/test.js
+    depends_on:
+        - nginx
+    volumes:
+        - ./src/results:/data
 
   nginx:
-      build:
-          context: ./dockerfiles/nginx
-          dockerfile: Dockerfile
-      ports:
-          - 80:80
-      volumes:
-          - ./src/results/reports:/reports
+    build:
+        context: ./dockerfiles/nginx
+        dockerfile: Dockerfile
+    ports:
+        - 80:80
+    volumes:
+        - ./src/results/reports:/reports
