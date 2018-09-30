@@ -1,10 +1,15 @@
 version: '3'
 
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+
 services:
 
   nginx:
-    restart: always
     build: ./nginx
+    container_name: nginx
+    restart: always
     ports:
       - "80:80"
     volumes:
@@ -15,15 +20,14 @@ services:
       - django
 
   django:
-    restart: always
-    env_file: .dev_env
-    environment:
-      - DJANGO_SETTINGS_MODULE=testingtool.settings.dev
-
     build:
       context: ./src/dockerfiles
       dockerfile: dev
-
+    env_file: .dev_env
+    container_name: django
+    restart: always
+    environment:
+      - DJANGO_SETTINGS_MODULE=testingtool.settings.dev
     depends_on:
       - db
     volumes:
@@ -32,26 +36,88 @@ services:
     command: gunicorn testingtool.wsgi:application -t 3600 -w 2 -b :8000 --reload
 
   db:
-    restart: always
-    env_file: .dev_env
     image: postgres:9.6
+    env_file: .dev_env
+    container_name: postgres
+    restart: always
     volumes:
       - ./pgdata:/var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
 
   redis:
-    restart: always
     image: redis:3.2
+    container_name: redis
+    restart: always
 
   celery:
-    restart: always
     build:
       context: ./src/dockerfiles
       dockerfile: dev
+    container_name: celery
+    restart: always
     command: celery worker -A testingtool -l info
     depends_on:
       - redis
     env_file: .dev_env
     volumes:
       - ./src:/app
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    volumes:
+      - ./monitoring/prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    links:
+      - cadvisor:cadvisor
+      - alertmanager:alertmanager
+    depends_on:
+      - cadvisor
+
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - 8082:9093
+    volumes:
+      - ./monitoring/alertmanager/:/etc/alertmanager/
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+      - nginx
+      - django
+      - db
+      - redis
+      - celery
+
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 8081:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=Autotesting2018.
+      - GF_USERS_ALLOW_SIGN_UP=false
