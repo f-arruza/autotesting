@@ -1,4 +1,5 @@
 hub:
     image: selenium/hub
+    container_name: hub
     ports:
         - 8081:4444

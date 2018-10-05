@@ -64,13 +64,53 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "container_cpu_load_average_10s{image!=\"\"}",
+          "expr": "container_cpu_load_average_10s{name=\"nginx\"}",
           "format": "time_series",
           "interval": "10s",
           "intervalFactor": 1,
           "legendFormat": "{{ name }}",
           "metric": "container_cpu_user_seconds_total",
           "refId": "A",
+          "step": 10
+        },
+        {
+          "expr": "container_cpu_load_average_10s{name=\"django\"}",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_cpu_user_seconds_total",
+          "refId": "B",
+          "step": 10
+        },
+        {
+          "expr": "container_cpu_load_average_10s{name=\"postgres\"}",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_cpu_user_seconds_total",
+          "refId": "C",
+          "step": 10
+        },
+        {
+          "expr": "container_cpu_load_average_10s{name=\"celery\"}",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_cpu_user_seconds_total",
+          "refId": "D",
+          "step": 10
+        },
+        {
+          "expr": "container_cpu_load_average_10s{name=\"redis\"}",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_cpu_user_seconds_total",
+          "refId": "E",
           "step": 10
         }
       ],
@@ -162,13 +202,53 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "container_memory_max_usage_bytes{image!=\"\"}",
+          "expr": "container_memory_max_usage_bytes{name=\"nginx\"}",
           "format": "time_series",
           "interval": "10s",
           "intervalFactor": 1,
           "legendFormat": "{{ name }}",
           "metric": "container_memory_usage:sort_desc",
           "refId": "A",
+          "step": 10
+        },
+        {
+          "expr": "container_memory_max_usage_bytes{name=\"django\"}",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_memory_usage:sort_desc",
+          "refId": "B",
+          "step": 10
+        },
+        {
+          "expr": "container_memory_max_usage_bytes{name=\"postgres\"}",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_memory_usage:sort_desc",
+          "refId": "C",
+          "step": 10
+        },
+        {
+          "expr": "container_memory_max_usage_bytes{name=\"celery\"}",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_memory_usage:sort_desc",
+          "refId": "D",
+          "step": 10
+        },
+        {
+          "expr": "container_memory_max_usage_bytes{name=\"redis\"}",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_memory_usage:sort_desc",
+          "refId": "E",
           "step": 10
         }
       ],
@@ -260,13 +340,53 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(sum by (name) (rate(container_network_receive_bytes_total{image!=\"\"}[1m] ) ))",
+          "expr": "sort_desc(sum by (name) (rate(container_network_receive_bytes_total{name=\"nginx\"}[1m] ) ))",
           "format": "time_series",
           "interval": "10s",
           "intervalFactor": 1,
           "legendFormat": "{{ name }}",
           "metric": "container_network_receive_bytes_total",
           "refId": "A",
+          "step": 10
+        },
+        {
+          "expr": "sort_desc(sum by (name) (rate(container_network_receive_bytes_total{name=\"django\"}[1m] ) ))",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_network_receive_bytes_total",
+          "refId": "B",
+          "step": 10
+        },
+        {
+          "expr": "sort_desc(sum by (name) (rate(container_network_receive_bytes_total{name=\"postgres\"}[1m] ) ))",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_network_receive_bytes_total",
+          "refId": "C",
+          "step": 10
+        },
+        {
+          "expr": "sort_desc(sum by (name) (rate(container_network_receive_bytes_total{name=\"celery\"}[1m] ) ))",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_network_receive_bytes_total",
+          "refId": "D",
+          "step": 10
+        },
+        {
+          "expr": "sort_desc(sum by (name) (rate(container_network_receive_bytes_total{name=\"redis\"}[1m] ) ))",
+          "format": "time_series",
+          "interval": "10s",
+          "intervalFactor": 1,
+          "legendFormat": "{{ name }}",
+          "metric": "container_network_receive_bytes_total",
+          "refId": "E",
           "step": 10
         }
       ],
@@ -358,12 +478,48 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(sum by (name) (rate(container_network_transmit_bytes_total{image!=\"\"}[1m] ) ))",
+          "expr": "sort_desc(sum by (name) (rate(container_network_transmit_bytes_total{name=\"nginx\"}[1m] ) ))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ name }}",
           "metric": "container_network_transmit_bytes_total",
           "refId": "B",
+          "step": 4
+        },
+        {
+          "expr": "sort_desc(sum by (name) (rate(container_network_transmit_bytes_total{name=\"django\"}[1m] ) ))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ name }}",
+          "metric": "container_network_transmit_bytes_total",
+          "refId": "A",
+          "step": 4
+        },
+        {
+          "expr": "sort_desc(sum by (name) (rate(container_network_transmit_bytes_total{name=\"postgres\"}[1m] ) ))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ name }}",
+          "metric": "container_network_transmit_bytes_total",
+          "refId": "C",
+          "step": 4
+        },
+        {
+          "expr": "sort_desc(sum by (name) (rate(container_network_transmit_bytes_total{name=\"celery\"}[1m] ) ))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ name }}",
+          "metric": "container_network_transmit_bytes_total",
+          "refId": "D",
+          "step": 4
+        },
+        {
+          "expr": "sort_desc(sum by (name) (rate(container_network_transmit_bytes_total{name=\"redis\"}[1m] ) ))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ name }}",
+          "metric": "container_network_transmit_bytes_total",
+          "refId": "E",
           "step": 4
         }
       ],
@@ -446,7 +602,7 @@
     ]
   },
   "timezone": "",
-  "title": "AutoTesting App",
+  "title": "AutoTesting Webapp",
   "uid": "w_F-QE0iz",
   "version": 6
 }
