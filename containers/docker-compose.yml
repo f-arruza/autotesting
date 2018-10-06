@@ -2,11 +2,10 @@ version: '3'
 
 services:
 
-  cypress:
+  resemblejs:
     build:
-      context: ./dockerfiles/Cypress_Electron_Chrome67
+      context: ./dockerfiles/ResembleJS
       dockerfile: Dockerfile
-    command: cypress run --project /test  --browser chrome
+    command: npm run test
     volumes:
-      - ./src/cypress:/test
-      - ./src/results/jsons:/reports
+      - ./src/resemblejs:/test
