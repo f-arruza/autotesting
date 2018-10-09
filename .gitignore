@@ -92,6 +92,10 @@ containers/emulator-android/app-release/*
 containers/emulator-android/video-nexus_5.1.1/*
 containers/emulator-android/video-samsung_7.1.1/*
 pgdata/
+containers/src/mdroidplus/app_src/*
+!containers/src/mdroidplus/app_src/.gitkeep
+containers/src/mdroidplus/mutants/*
+!containers/src/mdroidplus/mutants/.gitkeep
 src/*/migrations/0*
 .vscode/
 src/venv/

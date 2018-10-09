@@ -17,7 +17,7 @@ services:
 
   nginx:
     build:
-        context: ./dockerfiles/nginx
+        context: ./dockerfiles/Nginx
         dockerfile: Dockerfile
     container_name: nginx
     ports:

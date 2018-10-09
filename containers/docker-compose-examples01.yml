@@ -23,7 +23,7 @@ services:
 
   nginx:
       build:
-          context: ./dockerfiles/nginx
+          context: ./dockerfiles/Nginx
           dockerfile: Dockerfile
       ports:
           - 80:80
@@ -72,6 +72,14 @@ services:
       volumes:
           - ./src/webdriverio-cucumber:/app
           - ./src/results/jsons:/reports
+
+  resemblejs:
+      build:
+        context: ./dockerfiles/ResembleJS
+        dockerfile: Dockerfile
+      command: npm run test
+      volumes:
+        - ./src/resemblejs:/test
 
   hub:
       image: selenium/hub
