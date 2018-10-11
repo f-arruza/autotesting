@@ -1,0 +1,8 @@
+{{ container_label }}:
+    build:
+        context: ./dockerfiles/{{ container_desc }}
+        dockerfile: Dockerfile
+    container_name: {{ container_label }}
+    command: {{ command }}
+    volumes:
+        - {{ source_path }}:/application

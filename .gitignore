@@ -96,6 +96,8 @@ containers/src/mdroidplus/app_src/*
 !containers/src/mdroidplus/app_src/.gitkeep
 containers/src/mdroidplus/mutants/*
 !containers/src/mdroidplus/mutants/.gitkeep
+containers/src/android-builder/*
+!containers/src/android-builder/.gitkeep
 src/*/migrations/0*
 .vscode/
 src/venv/

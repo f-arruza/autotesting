@@ -2,11 +2,12 @@ version: '3'
 
 services:
 
-  mdroidplus:
+  stryker:
     build:
-      context: ./dockerfiles/MDroidPlus
+      context: ./dockerfiles/Stryker
       dockerfile: Dockerfile
-    command: java -jar MDroidPlus-1.0.0.jar libs4ast/ /app_src org.gnucash.android /mutants ./ false
-    volumes:
-      - ./src/mdroidplus/app_src:/app_src
-      - ./src/mdroidplus/mutants:/mutants
+    command: npm run stryker
+    # npm run stryker
+    # volumes:
+    #   - ./src/stryker/js:/app/js
+    #   - ./src/stryker/test:/app/test

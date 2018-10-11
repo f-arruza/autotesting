@@ -2,11 +2,20 @@ version: '3'
 
 services:
 
-  cypress:
+  cypress-chrome:
     build:
       context: ./dockerfiles/Cypress_Electron_Chrome67
       dockerfile: Dockerfile
     command: cypress run --browser chrome --project /test
+    volumes:
+      - ./src/cypress:/test
+      - ./src/results/jsons:/reports
+
+  cypress-electron:
+    build:
+      context: ./dockerfiles/Cypress_Electron_Chrome67
+      dockerfile: Dockerfile
+    command: cypress run --project /test
     volumes:
       - ./src/cypress:/test
       - ./src/results/jsons:/reports
@@ -80,6 +89,23 @@ services:
       command: npm run test
       volumes:
         - ./src/resemblejs:/test
+
+  mdroidplus:
+      build:
+        context: ./dockerfiles/MDroidPlus
+        dockerfile: Dockerfile
+      command: java -jar MDroidPlus-1.0.0.jar libs4ast/ /app_src org.gnucash.android /mutants ./ false
+      volumes:
+        - ./src/mdroidplus/app_src:/app_src
+        - ./src/mdroidplus/mutants:/mutants
+
+  android-builder:
+      build:
+        context: ./dockerfiles/Android_Builder
+        dockerfile: Dockerfile
+      command: sh -c /scripts/compile.sh
+      volumes:
+        - ./src/android-builder:/application
 
   hub:
       image: selenium/hub

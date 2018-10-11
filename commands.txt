@@ -4,5 +4,9 @@ docker-compose run --rm webdriverio wdio
 docker-compose run --rm webdriverio-gremlins wdio
 docker-compose run --rm webdriverio-cucumber wdio
 docker-compose run --rm report_builder
+docker-compose run --rm resemblejs
+docker-compose run --rm mdroidplus
+docker-compose run --rm stryker
+docker-compose run --rm android-builder
 
 cp -R src/results/reports/ /home/SIS/f.arruza/
