@@ -1,0 +1,124 @@
+version: '3'
+
+services:
+  cypress-chrome:
+    build:
+        context: ./dockerfiles/Cypress_Electron_Chrome67
+        dockerfile: Dockerfile
+    container_name: cypress-chrome
+    command: cypress run --browser chrome
+    volumes:
+        - ./src/cypress:/test
+        - ./src/results/jsons:/reports
+
+  cypress-electron:
+    build:
+        context: ./dockerfiles/Cypress_Electron_Chrome67
+        dockerfile: Dockerfile
+    container_name: cypress-electron
+    command: cypress run
+    volumes:
+        - ./src/cypress:/test
+        - ./src/results/jsons:/reports
+
+  hub:
+    image: selenium/hub
+    container_name: hub
+    ports:
+        - 8081:4444
+
+  chrome:
+    image: selenium/node-chrome
+    ports:
+        - 5900
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    depends_on:
+        - hub
+
+  firefox:
+    image: selenium/node-firefox
+    ports:
+        - 5900
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    depends_on:
+        - hub
+
+  webdriverio:
+    build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+    container_name: webdriverio
+    depends_on:
+        - hub
+        - chrome
+        - firefox
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    volumes:
+        - ./src/webdriverio:/app
+        - ./src/results/jsons:/reports
+
+  webdriverio-gremlins:
+    build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+    container_name: webdriverio-gremlins
+    depends_on:
+        - hub
+        - chrome
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    volumes:
+        - ./src/webdriverio-gremlins:/app
+        - ./src/results/jsons:/reports
+
+  webdriverio-cucumber:
+    build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+    container_name: webdriverio-cucumber
+    depends_on:
+        - hub
+        - chrome
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    volumes:
+        - ./src/webdriverio-cucumber:/app
+        - ./src/results/jsons:/reports
+
+  resemblejs:
+    build:
+        context: ./dockerfiles/ResembleJS
+        dockerfile: Dockerfile
+    container_name: resemblejs
+    command: npm run test
+    volumes:
+        - ./src/resemblejs:/test
+
+  report_builder:
+    build:
+        context: ./dockerfiles/Report_Builder
+        dockerfile: Dockerfile
+    container_name: report_builder
+    command: node scripts/test.js
+    depends_on:
+        - nginx
+    volumes:
+        - ./src/results:/data
+
+  nginx:
+    build:
+        context: ./dockerfiles/Nginx
+        dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+        - 80:80
+    volumes:
+        - ./src/results/reports:/reports
