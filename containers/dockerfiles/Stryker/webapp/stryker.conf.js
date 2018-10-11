@@ -3,6 +3,17 @@ module.exports = function(config) {
     mutate: ["js/**/*.js"],
     mutator: "javascript",
     testRunner: "karma",
+    files: [
+      // 'node_modules/angular/angular.js',
+			// 'node_modules/angular-route/angular-route.js',
+			// 'node_modules/angular-resource/angular-resource.js',
+			// 'node_modules/angular-mocks/angular-mocks.js',
+      'js/**/*.js',
+      'test/**/*.js',
+      'karma.conf.js',
+      'stryker.conf.js'
+    ],
+    // symlinkNodeModules: false,
     karma: {
       configFile: "karma.conf.js",
       config: {
@@ -10,31 +21,9 @@ module.exports = function(config) {
       }
     },
     reporters: ["html", "clear-text", "progress"],
-    testFramework: "jasmine",
-    coverageAnalysis: "perTest"
-    // maxConcurrentTestRunners: 4,    
+    testFramework: 'jasmine',
+    coverageAnalysis: 'off',
+    logLevel: 'debug'
+    // maxConcurrentTestRunners: 4,
   });
 };
-
-// module.exports = function (config) {
-//   config.set({
-//     mutate: [
-//       'src/**/*.ts',
-//       '!src/**/*.spec.ts',
-//       '!src/test.ts',
-//       '!src/environments/*.ts'
-//     ],
-//     mutator: 'typescript',
-//     testRunner: 'karma',
-//     karma: {
-//       configFile: 'src/karma.conf.js',
-//       projectType: 'angular-cli',
-//       config: {
-//         browsers: ['ChromeHeadless']
-//       }
-//     },
-//     reporters: ['progress', 'clear-text', 'html'],
-//     // maxConcurrentTestRunners: 2, // Recommended to not use all cores when running stryker with angular.
-//     coverageAnalysis: 'off'
-//   });
-// };
