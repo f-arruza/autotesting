@@ -117,7 +117,7 @@ class MobileEnvironment(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.id + ' - ' + self.name
+        return self.name
 
     class Meta:
         db_table = 'mobile_environment'

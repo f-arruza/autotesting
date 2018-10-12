@@ -9,4 +9,7 @@ docker-compose run --rm mdroidplus
 docker-compose run --rm stryker
 docker-compose run --rm android-builder
 
+docker-compose -f docker-compose.monitoring.yml up -d
+docker-compose -f docker-compose.mobile.yml up -d
+
 cp -R src/results/reports/ /home/SIS/f.arruza/
