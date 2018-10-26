@@ -17,13 +17,20 @@ module.exports = function(config) {
     karma: {
       configFile: "karma.conf.js",
       config: {
-        browsers: ['ChromeHeadless']
+        // browsers: ['ChromeHeadless']
+        browsers: ['ChromeHeadlessNoSandbox'],
+        customLaunchers: {
+          ChromeHeadlessNoSandbox: {
+            base: 'ChromeHeadless',
+            flags: ['--no-sandbox']
+          }
+        },
       }
     },
     reporters: ["html", "clear-text", "progress"],
     testFramework: 'jasmine',
     coverageAnalysis: 'off',
-    logLevel: 'debug'
+    logLevel: 'trace',
     // maxConcurrentTestRunners: 4,
   });
 };
