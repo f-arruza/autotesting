@@ -26,7 +26,7 @@ class Application(models.Model):
     )
 
     name = models.CharField('Name', max_length=100)
-    version = models.CharField('Version', max_length=20)
+    version = models.CharField('Version', max_length=20, default='1.0')
     src_url = models.CharField('Source Url', max_length=100)
     apk_url = models.CharField('APK Url', max_length=100, blank=True)
     type = models.CharField('Type', max_length=2, choices=type, default='01')
