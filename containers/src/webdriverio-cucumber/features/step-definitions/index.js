@@ -26,7 +26,7 @@ defineSupportCode(({Given, When, Then}) => {
 
     var passwordInput = cajaLogIn.element('input[name="password"]');
     passwordInput.click();
-    passwordInput.keys(password)
+    passwordInput.keys(password);
   });
 
 

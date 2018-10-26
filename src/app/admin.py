@@ -15,7 +15,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Application)
 class AplicationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'type', 'project', 'active',)
+    list_display = ('id', 'name', 'version', 'type', 'project', 'active',)
 
 
 @admin.register(Browser)

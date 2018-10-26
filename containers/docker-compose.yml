@@ -6,27 +6,23 @@ services:
     build:
       context: ./dockerfiles/Stryker
       dockerfile: Dockerfile
-    command: npm run stryker --no-sandbox
-    # npm run stryker
-    # volumes:
-    #   - ./src/stryker/js:/app/js
-    #   - ./src/stryker/test:/app/test
+    command: npm run stryker
 
-  # mdroidplus:
-  #   build:
-  #     context: ./dockerfiles/MDroidPlus
-  #     dockerfile: Dockerfile
-  #   container_name: mdroidplus
-  #   command: java -jar MDroidPlus-1.0.0.jar libs4ast/ /app_src it.feio.android.omninotes /mutants ./ false
-  #   volumes:
-  #     - ./src/mdroidplus/app_src:/app_src
-  #     - ./src/mdroidplus/mutants:/mutants
+  mdroidplus:
+    build:
+      context: ./dockerfiles/MDroidPlus
+      dockerfile: Dockerfile
+    container_name: mdroidplus
+    command: java -jar MDroidPlus-1.0.0.jar libs4ast/ /app_src it.feio.android.omninotes /mutants ./ false
+    volumes:
+      - ./src/mdroidplus/app_src:/app_src
+      - ./src/mdroidplus/mutants:/mutants
 
-  # android-builder:
-  #   build:
-  #     context: ./dockerfiles/Android_Builder
-  #     dockerfile: Dockerfile
-  #   container_name: android-builder
-  #   command: sh -c /scripts/compile.sh
-  #   volumes:
-  #     - ./src/mdroidplus/mutants/it.feio.android.omninotes-mutant1:/application
+  android-builder:
+      build:
+          context: ./dockerfiles/Android_Builder
+          dockerfile: Dockerfile
+      container_name: android-builder
+      command: sh -c /scripts/compile.sh
+      volumes:
+          - ./src/android-builder:/application
