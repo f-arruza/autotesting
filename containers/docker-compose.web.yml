@@ -108,6 +108,8 @@ services:
         dockerfile: Dockerfile
     container_name: stryker
     command: npm run stryker
+    depends_on:
+        - nginx
     volumes:
       - ./src/results/stryker:/reports
 
@@ -130,4 +132,4 @@ services:
     ports:
         - 80:80
     volumes:
-        - ./src/results/reports:/reports
+        - ./src/results:/reports

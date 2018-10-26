@@ -23,4 +23,4 @@ services:
     ports:
         - 80:80
     volumes:
-        - ./src/results/reports:/reports
+        - ./src/results:/reports
