@@ -28,6 +28,9 @@ module.exports = function(config) {
       }
     },
     reporters: ["html", "clear-text", "progress"],
+    htmlReporter: {
+        baseDir: '/reports/mutation/html' // this is the default
+    },
     testFramework: 'jasmine',
     coverageAnalysis: 'off',
     logLevel: 'trace',

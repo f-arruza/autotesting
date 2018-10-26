@@ -7,6 +7,8 @@ services:
       context: ./dockerfiles/Stryker
       dockerfile: Dockerfile
     command: npm run stryker
+    volumes:
+      - ./src/results/stryker:/reports
 
   mdroidplus:
     build:

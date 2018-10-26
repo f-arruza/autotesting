@@ -15,4 +15,6 @@ ADD ./webapp/. /app
 # Install app dependencies
 RUN npm install
 
+RUN mkdir /reports
+
 EXPOSE 8080

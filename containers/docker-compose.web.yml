@@ -108,6 +108,8 @@ services:
         dockerfile: Dockerfile
     container_name: stryker
     command: npm run stryker
+    volumes:
+      - ./src/results/stryker:/reports
 
   report_builder:
     build:
