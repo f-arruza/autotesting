@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Generar mutantes
-# docker-compose run --rm mdroidplus
+docker-compose -f docker-compose.mobile.yml run --rm mdroidplus
 
 for folder in $(pwd $PATH)/src/mdroidplus/mutants/*
 do
@@ -14,7 +14,7 @@ do
       ln -s $folder $(pwd $PATH)/src/android-builder
 
       # Se compila y genera el APK del mutante X
-      # docker-compose run --rm android-builder
+      docker-compose -f docker-compose.mobile.yml run --rm android-builder
 
       find $(pwd $PATH)/src/android-builder/ -type f -name '*.apk' -exec cp {} $(pwd $PATH)/src/mdroidplus/apks/$FOLDER_NAME/ \;
 

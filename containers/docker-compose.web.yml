@@ -102,6 +102,13 @@ services:
     volumes:
         - ./src/resemblejs:/test
 
+  stryker:
+    build:
+        context: ./dockerfiles/Stryker
+        dockerfile: Dockerfile
+    container_name: stryker
+    command: npm run stryker
+
   report_builder:
     build:
         context: ./dockerfiles/Report_Builder
