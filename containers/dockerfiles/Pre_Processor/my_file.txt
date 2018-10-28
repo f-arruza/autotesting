@@ -1,0 +1,12 @@
+My first row
+My second row
+Feature: Login into losestudiantes
+    As an user I want to authenticate myself within losestudiantes website in order to rate teachers
+
+Scenario Outline: Login failed with wrong inputs
+
+  Given I go to losestudiantes home screen
+    When I open the login screen
+    And I fill with <randomEmail> and <randomPassword>
+    And I try to login
+    Then I expect to see <error>
