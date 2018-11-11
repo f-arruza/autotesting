@@ -11,7 +11,7 @@ Given I go to losestudiantes home screen
 
     Examples:
      |randomEmail      | randomPassword      | 
-     |Nina_Becker@yahoo.com      | TS2Pcy2N0XLIsBS      | 
+     |Elvera.Kuhic@hotmail.com      | NWLPzfZEmfI7j3I      | 
 
 Scenario Outline: login works with correct username and password
 Given I go to losestudiantes home screen

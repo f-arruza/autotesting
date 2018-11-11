@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 exports.config = {
     host: 'hub',
     port: 4444,
@@ -16,6 +18,7 @@ exports.config = {
       maxInstances: 5,
 
       browserName: 'chrome',
+      aut_version: '1.0.1',
       chromeOptions: {
           args: [ "--headless", "--disable-gpu", "--window-size=800,600" ]
       }
@@ -28,7 +31,7 @@ exports.config = {
 
     coloredLogs: true,
 
-    screenshotPath: './errorShots/',
+    screenshotPath: '/screenshots/',
 
     baseUrl: 'https://losestudiantes.co',
 
@@ -58,5 +61,20 @@ exports.config = {
         tags: [],           // <string[]> (expression) only execute the features or scenarios with tags matching the expression
         timeout: 20000,     // <number> timeout for step definitions
         ignoreUndefinedDefinitions: false, // <boolean> Enable this config to treat undefined definitions as warnings.
+    },
+    afterStep: function (stepResult) {
+      var path = browser.options.screenshotPath;
+      var featureName = stepResult.step.scenario.uri.replace(process.cwd(), "").split("/").join("_").replace(".feature", "");
+
+      var version = browser.options.desiredCapabilities.aut_version;
+      var datetime = new Date().getTime();
+
+      if(!fs.existsSync(path + version)) {
+        fs.mkdirSync(path + version);
+      }
+      var fileName = path + version + '/' + browser.options.desiredCapabilities.browserName +
+          featureName + '_' + datetime + '.png';
+      console.log(fileName);
+      browser.saveScreenshot(fileName);
     },
 }

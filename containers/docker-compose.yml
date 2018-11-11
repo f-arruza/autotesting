@@ -32,4 +32,4 @@ services:
       volumes:
           - ./src/webdriverio-cucumber:/app
           - ./src/results/jsons:/reports
-          - ./src/results/screenshots:/screenshots
+          - ./src/results/screenshots/cucumber:/screenshots
