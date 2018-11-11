@@ -17,6 +17,8 @@
     "wdio-selenium-standalone-service": "0.0.10",
     "webdriverio": "^4.13.2",
     "css-to-xpath": "0",
-    "icu-loader": "2"
+    "icu-loader": "2",
+    "line-reader": "^0.4.0",
+    "faker": "^4.1.0"
   }
 }

@@ -4,17 +4,14 @@ var {expect} = require('chai');
 defineSupportCode(({Given, When, Then}) => {
   Given('I go to losestudiantes home screen', () => {
     browser.url('/');
-    if(browser.isVisible('.botonCerrar')) {
-      browser.element('.botonCerrar').click();
+    if(browser.isVisible('button=Cerrar')) {
+      browser.click('button=Cerrar');
     }
   });
 
   When('I open the login screen', () => {
-    if(browser.isVisible('.modal-body')) {
-      browser.waitForVisible('.botonIngresar', 5000);
-    }
-    browser.waitForVisible('.botonIngresar', 5000);
-    browser.element('.botonIngresar').click();
+    browser.waitForVisible('button=Ingresar', 5000);
+    browser.click('button=Ingresar');
   });
 
   When(/^I fill with (.*) and (.*)$/ , (email, password) => {
@@ -26,95 +23,75 @@ defineSupportCode(({Given, When, Then}) => {
 
     var passwordInput = cajaLogIn.element('input[name="password"]');
     passwordInput.click();
-    passwordInput.keys(password);
+    passwordInput.keys(password)
   });
-
 
   When('I try to login', () => {
     var cajaLogIn = browser.element('.cajaLogIn');
     cajaLogIn.element('button=Ingresar').click()
   });
 
-  Then('I expect to see {string}', error => {
-    if(error == 'SUCESS_FLAG') {
-      browser.waitForVisible('button[id="cuenta"]', 5000);
-      expect(browser.isVisible('button[id="cuenta"]')).to.be.equals(true);
-    }
-    else {
-      browser.waitForVisible('.aviso.alert.alert-danger', 5000);
-      var alertText = browser.element('.aviso.alert.alert-danger').getText();
-      expect(alertText).to.include(error);
-    }
-  });
-
-  // Register
-  When('I open the register screen', () => {
-    if(browser.isVisible('.modal-body')) {
-      browser.waitForVisible('.botonIngresar', 5000);
-    }
-    browser.waitForVisible('.botonIngresar', 5000);
-    browser.element('.botonIngresar').click();
-  });
-
-  When(/^I fill SignUp with (.*), (.*), (.*), (.*) and (.*)$/ , (name, lastname, email, password, accept) => {
-    browser.waitForVisible('.cajaSignUp', 5000);
-
+  When(/^Fill with (.*), (.*), (.*), (.*) and (.*)$/ , (firstname, lastname, email, password, degree) => {
     var cajaSignUp = browser.element('.cajaSignUp');
-    var nombreInput = cajaSignUp.element('input[name="nombre"]');
-    nombreInput.click();
-    nombreInput.keys(name);
+    var nameInput = cajaSignUp.element('input[name="nombre"]');
+    nameInput.click();
+    nameInput.keys(firstname);
 
-    var apellidoInput = cajaSignUp.element('input[name="apellido"]');
-    apellidoInput.click();
-    apellidoInput.keys(lastname);
+    var lastNameInput = cajaSignUp.element('input[name="apellido"]');
+    lastNameInput.click();
+    lastNameInput.keys(lastname);
 
-    var correoInput = cajaSignUp.element('input[name="correo"]');
-    correoInput.click();
-    correoInput.keys(email);
+    var mailInput = cajaSignUp.element('input[name="correo"]');
+    mailInput.click();
+    mailInput.keys(email);
 
     var passwordInput = cajaSignUp.element('input[name="password"]');
     passwordInput.click();
     passwordInput.keys(password);
 
-    cajaSignUp.element('[type="checkbox"]').click();
-    cajaSignUp.element('[name="idPrograma"]').selectByValue('16')
-    if(accept == 'true') {
-      cajaSignUp.element('input[name="acepta"]').click();
-    }
+    cajaSignUp.element('select[name="idPrograma"]').selectByValue(degree);
   });
 
-  When('I try to register', () => {
+  Then('I try to create an account {string}' , agreeTerms => {
+    var cajaSignUp = browser.element('.cajaSignUp');
+    if(agreeTerms=="true")
+      cajaSignUp.element('input[name="acepta"]').click();
+
     browser.click('button=Registrarse');
   });
 
-  Then(/^I expect (.*)$/ , (behavior) => {
-    // Nombre y apellidos
-    if(behavior.startsWith('E:')) {
-      expect(browser.isVisible('.glyphicon-remove')).equal(true);
-    }
-    // Errores en ingreso de datos
-    if(behavior.startsWith('A:')) {
-      var msg = behavior.replace('A:', '');
-      var alertText = browser.element('.alert-danger').getText();
-      expect(alertText).to.include(msg);
-    }
-    // Usuario Repetido
-    if(behavior.startsWith('R:')) {
-      browser.waitForVisible('.sweet-alert', 5000);
-      var alertText = browser.element('.sweet-alert').element('h2').getText();
-      expect(alertText).to.include('Ocurrió un error activando tu cuenta');
-    }
-    // Usuario Repetido
-    if(behavior.startsWith('RF:')) {
-      browser.waitForVisible('.sweet-alert', 5000);
-      var alertText = browser.element('.sweet-alert').element('h2').getText();
-      expect(alertText).to.include('Ocurrió un error activando tu cuenta');
-    }
-    // Usuario Exitoso
-    if(behavior.startsWith('RE:')) {
-      browser.waitForVisible('.sweet-alert', 5000);
-      var alertText = browser.element('.sweet-alert').element('h2').getText();
-      expect(alertText).to.include('Registro exitoso');
-    }
+  Then('I expect to see {string}', error => {
+      browser.waitForVisible('.aviso.alert.alert-danger', 5000);
+      var alertText = browser.element('.aviso.alert.alert-danger').getText();
+      expect(alertText).to.include(error);
   });
+
+  Then('I expect to see user icon',() => {
+    browser.waitForVisible('#cuenta', 5000);
+    browser.element('#cuenta').click();
+  });
+
+  Then('I will see the alert {string}', message => {
+    browser.waitForVisible('.sweet-alert', 5000);
+    var alert = browser.element('//*[@id="__next"]/div/div/div[1]/div/div/div[2]/div[2]/div').getText()
+    expect(alert).to.include(message);
+  });
+
+  Then('I will see validate {string}', message => {
+    var alert = browser.element('div[role="alert"]').getText()
+    expect(alert).to.include(message);
+  });
+
+  Then(/^The css (.*) has to be red$/, controlName => {
+    var control;
+    if(controlName == "name"){
+        control = browser.element('/html/body/div[3]/div[2]/div/div/div/div/div/div[1]/div/form/fieldset[1]/div');
+    }else if(controlName == "lastname"){
+      control = browser.element('/html/body/div[3]/div[2]/div/div/div/div/div/div[1]/div/form/fieldset[2]/div');
+    }else if(controlName == "degree"){
+      control = browser.element('/html/body/div[3]/div[2]/div/div/div/div/div/div[1]/div/form/div/fieldset[1]');
+    }
+     control.waitForVisible('.has-error', 1000);
+  });
+
 });

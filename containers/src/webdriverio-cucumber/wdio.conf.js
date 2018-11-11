@@ -3,7 +3,7 @@ exports.config = {
     port: 4444,
 
     specs: [
-        './features/**/*.feature'
+        './features/output/*.feature'
     ],
     // Patterns to exclude.
     exclude: [

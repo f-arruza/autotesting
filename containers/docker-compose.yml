@@ -1,30 +1,35 @@
 version: '3'
 
 services:
+    hub:
+      image: selenium/hub
+      container_name: hub
+      ports:
+          - 8081:4444
 
-  stryker:
-    build:
-      context: ./dockerfiles/Stryker
-      dockerfile: Dockerfile
-    command: npm run stryker
-    volumes:
-      - ./src/results/stryker:/reports
+    chrome:
+      image: selenium/node-chrome
+      ports:
+          - 5900
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
+      depends_on:
+          - hub
 
-  mdroidplus:
-    build:
-      context: ./dockerfiles/MDroidPlus
-      dockerfile: Dockerfile
-    container_name: mdroidplus
-    command: java -jar MDroidPlus-1.0.0.jar libs4ast/ /app_src it.feio.android.omninotes /mutants ./ false
-    volumes:
-      - ./src/mdroidplus/app_src:/app_src
-      - ./src/mdroidplus/mutants:/mutants
-
-  android-builder:
+    webdriverio-cucumber:
       build:
-          context: ./dockerfiles/Android_Builder
+          context: ./dockerfiles/WebdriverIO_Chrome_Firefox
           dockerfile: Dockerfile
-      container_name: android-builder
-      command: sh -c /scripts/compile.sh
+      container_name: webdriverio-cucumber
+      entrypoint: /opt/bin/./entry-point.sh
+      depends_on:
+          - hub
+          - chrome
+      environment:
+          - HUB_PORT_4444_TCP_ADDR=hub
+          - HUB_PORT_4444_TCP_PORT=4444
       volumes:
-          - ./src/android-builder:/application
+          - ./src/webdriverio-cucumber:/app
+          - ./src/results/jsons:/reports
+          - ./src/results/screenshots:/screenshots
