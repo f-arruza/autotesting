@@ -1,35 +1,12 @@
 version: '3'
 
 services:
-    hub:
-      image: selenium/hub
-      container_name: hub
-      ports:
-          - 8081:4444
-
-    chrome:
-      image: selenium/node-chrome
-      ports:
-          - 5900
-      environment:
-          - HUB_PORT_4444_TCP_ADDR=hub
-          - HUB_PORT_4444_TCP_PORT=4444
-      depends_on:
-          - hub
-
-    webdriverio-cucumber:
+    vrtapp:
       build:
-          context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+          context: ./dockerfiles/VRTApplication
           dockerfile: Dockerfile
-      container_name: webdriverio-cucumber
-      entrypoint: /opt/bin/./entry-point.sh
-      depends_on:
-          - hub
-          - chrome
-      environment:
-          - HUB_PORT_4444_TCP_ADDR=hub
-          - HUB_PORT_4444_TCP_PORT=4444
+      container_name: vrt-applicaction
+      ports:
+          - 8081:80
       volumes:
-          - ./src/webdriverio-cucumber:/app
-          - ./src/results/jsons:/reports
           - ./src/results/screenshots/cucumber:/screenshots

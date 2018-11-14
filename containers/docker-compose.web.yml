@@ -83,6 +83,7 @@ services:
         context: ./dockerfiles/WebdriverIO_Chrome_Firefox
         dockerfile: Dockerfile
     container_name: webdriverio-cucumber
+    entrypoint: /opt/bin/./entry-point.sh
     depends_on:
         - hub
         - chrome
@@ -92,6 +93,7 @@ services:
     volumes:
         - ./src/webdriverio-cucumber:/app
         - ./src/results/jsons:/reports
+        - ./src/results/screenshots/cucumber:/screenshots
 
   resemblejs:
     build:
