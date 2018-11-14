@@ -1,0 +1,9 @@
+{{ container_label }}:
+    build:
+        context: ./dockerfiles/{{ container_desc }}
+        dockerfile: Dockerfile
+    container_name: {{ container_label }}
+    ports:
+        - 8081:80
+    volumes:
+      - ./src/results/screenshots/cucumber:/var/www/html/screenshots

@@ -9,4 +9,4 @@ services:
       ports:
           - 8081:80
       volumes:
-          - ./src/results/screenshots/cucumber:/screenshots
+          - ./src/results/screenshots/cucumber:/var/www/html/screenshots

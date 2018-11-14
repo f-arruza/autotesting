@@ -126,6 +126,16 @@ services:
     volumes:
         - ./src/results:/data
 
+  vrtapp:
+    build:
+        context: ./dockerfiles/VRTApplication
+        dockerfile: Dockerfile
+    container_name: vrt-applicaction
+    ports:
+        - 8081:80
+    volumes:
+        - ./src/results/screenshots/cucumber:/var/www/html/screenshots
+
   nginx:
     build:
         context: ./dockerfiles/Nginx
