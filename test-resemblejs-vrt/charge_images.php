@@ -6,40 +6,75 @@
  * Time: 8:35
  */
 
-    $directory1 = "images1/features";
-    $directory2 = "images2/features";
+    $dir_base = "screenshots";
+    $base_1 = isset($_POST["directorio1"]) ? $_POST["directorio1"] : NULL;
+    $base_2 = isset($_POST["directorio2"]) ? $_POST["directorio2"] : NULL;
 
-    $dirint = opendir($directory1);
-    $images = [];
-    $names = [];
-    $i = 0;
-    $j = 1;
-    $n = 0;
+    $directory1 = "screenshots/". $base_1;
+    $directory2 = "screenshots/". $base_2;
 
-    while (($archivo = readdir($dirint)) !== false)
+    $dir = scandir($dir_base, 1);
+
+    $directorios = [];
+    $mensaje = "";
+
+    for ($d = 0; $d < (count($dir)-2); $d++)
     {
-        if (preg_match("/.gif/", $archivo) || preg_match("/.jpg/", $archivo) || preg_match("/.png/", $archivo))
-        {
-            $images[$i] = $directory1 . "/" . $archivo;
-            $i = $i + 2;
-            $names[] = explode('.',$archivo);
-        }
+        $directorios[] = $dir[$d];
     }
 
-    closedir($dirint);
-
-    $dirint2 = opendir($directory2);
-
-    while (($archivo = readdir($dirint2)) !== false)
+    if($directory1 != $directory2)
     {
-        if (preg_match("/.gif/", $archivo) || preg_match("/.jpg/", $archivo) || preg_match("/.png/", $archivo))
+        $dirint = opendir($directory1);
+
+        $files = [];
+        $images = [];
+        $names = [];
+        $i = 0;
+        $j = 1;
+        $n = 0;
+
+        while (($archivo = readdir($dirint)) !== false)
         {
-            $images[$j] = $directory2 . "/" . $archivo;
-            $j = $j + 2;
-            $names[] = explode('.',$archivo);
+            if (preg_match("/.gif/", $archivo) || preg_match("/.jpg/", $archivo) || preg_match("/.png/", $archivo))
+            {
+                $files[] = $archivo;
+                $images[$i] = $directory1 . "/" . $archivo;
+                $name_file = explode('.',$archivo);
+                $names[$i] = $name_file[0];
+                $i = $i + 2;
+            }
         }
+
+        closedir($dirint);
+
+        $dirint2 = opendir($directory2);
+
+        while (($archivo = readdir($dirint2)) !== false)
+        {
+            if (preg_match("/.gif/", $archivo) || preg_match("/.jpg/", $archivo) || preg_match("/.png/", $archivo))
+            {
+                for($f = 0; $f < count($files); $f++)
+                {
+                    if($files[$f] == $archivo)
+                    {
+                        $images[$j] = $directory2 . "/" . $archivo;
+                        $name_file = explode('.',$archivo);
+                        $names[$j] = $name_file[0];
+                        $j = $j + 2;
+                        break;
+                    }
+                }
+            }
+        }
+
+        closedir($dirint2);
+
+        ksort($images);
+        ksort($names);
     }
-
-    closedir($dirint2);
-
-    ksort($images);
+    else
+    {
+        if($base_1 && $base_2)
+            $mensaje = "Esta tratando de comparar las mismas versiones!";
+    }

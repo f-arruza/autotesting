@@ -6,15 +6,15 @@
 $(document).ready(function () {
     var file = $('img');
     var cantidad_img = file.length;
+    var c = 1;
 
     for(var i = 0; i < cantidad_img; i++)
     {
         if(i%2 != 0)
         {
-            console.log(i);
             var id = '#DiffImage' + i;
             var idmsn = '#result' + i;
-            comparission(file[i-1].src, file[i].src, id, idmsn);
+            comparission(file[i-1].src, file[i].src, id, idmsn, i);
         }
     }
 
@@ -24,9 +24,13 @@ $(document).ready(function () {
         });
     }
 
-    function comparission(file1, file2, id, idmsn) {
+    function comparission(file1, file2, id, idmsn, i) {
         control = resemble(file1).compareTo(file2).onComplete(function (data) {
-            console.log(data);
+
+            var name1 = file1.split('/')[file1.split('/').length - 1].split('.')[0];
+            var name2 = file2.split('/')[file2.split('/').length - 1].split('.')[0];
+            $("#indice ul").append('<li><a href="#comp'+i+'">Comparación '+ c +': ' + name1 + ' - ' + name2 + ' Diferencia en: ' + data.misMatchPercentage + '%</a></li>');
+            c++;
             var dimension = "";
             if(data.isSameDimensions)
             {
