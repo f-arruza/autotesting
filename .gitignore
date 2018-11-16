@@ -101,6 +101,7 @@ containers/src/mdroidplus/apks/*
 containers/src/android-builder/*
 !containers/src/android-builder/.gitkeep
 src/*/migrations/0*
+containers/test_servers/
 .vscode/
 src/venv/
 src/.idea/
