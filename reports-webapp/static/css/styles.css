@@ -1,0 +1,113 @@
+.user-l {
+  padding-right: 6px;
+}
+.user-r {
+  padding-left: 6px;
+}
+.user-l >img,
+.user-r >img {
+  width: 150px;
+}
+.redes >ul li a {
+  width: 42px;
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: center;
+  border-radius: 10em;
+  border: #EEE 1px solid;
+}
+.redes >ul li span {
+  color: #CCC;
+  font-size: 18px;
+}
+.image_ava img {
+  border-radius: 10em!important;
+  width: 150px;
+}
+.bio {
+  float: left;
+  position: absolute;
+  top: -45px;
+  left: 10px;
+  color: #FFF;
+}
+.bio2 {
+  float: right;
+  position: absolute;
+  top: -45px;
+  left: 10px;
+  color: #FFF;
+}
+.bio_content {
+  padding: 6px 10px;
+}
+/* New's panels */
+.paneles-usuario {
+  padding: 6px 0;
+  text-align: center;
+}
+.paneles-usuario .bloques {
+  border: 1px solid #CCC;
+  width: 30%;
+  display: inline-block;
+  text-align: center;
+  margin-left: -3.7px;
+  padding: 2px 8px;
+}
+.paneles-usuario .bloques i {
+  display: block;
+  font-size: 32px;
+  color: #FFF;
+  margin-bottom: -8px;
+  padding: 5px 0!important;
+}
+.paneles-usuario .bloques span {
+  font-size: 11px;
+  color: #FFF;
+}
+.bgf {
+  background-color: #3b5998;
+}
+.bgt {
+  background-color: #55acee;
+}
+.bgg {
+  background-color: #dd4b39;
+}
+/* Beta2 */
+.paneles-usuario-beta2 {
+  padding: 6px 0;
+  text-align: center;
+  float: right;
+  position: absolute;
+  top: 4em;
+  left: .2em;
+  height: auto;
+  width: 80px;
+}
+.paneles-usuario-beta2 .bloques {
+  border: 1px solid #CCC;
+  width: 100%;
+  display: block;
+  text-align: center;
+  padding: 2px 8px;
+}
+.paneles-usuario-beta2 .bloques i {
+  display: block;
+  font-size: 32px;
+  color: #FFF;
+  padding: 5px 0!important;
+}
+.paneles-usuario-beta2 .bloques span {
+  font-size: 11px;
+  color: #FFF;
+}
+.bgf {
+  background-color: #3b5998;
+}
+.bgt {
+  background-color: #55acee;
+}
+.bgg {
+  background-color: #dd4b39;
+}
