@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Reportes</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="static/treeview/bootstrap-treeview.min.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h4>
+      Herramienta Pruebas automatizadas MISO V1.0
+    </h4>
+    <div class="row">
+    {%for app in apiData.applications %}
+        <div class="col-md-4">
+          <div class="card">
+              <h4 class="card-title text-center">{{ app.name }}</h4>
+              <h6 class="card-title text-center"><a target="_blank" href="{{ app.src_url }}">{{ app.src_url }}</a></h6>
+              <h6 class="card-title text-center"><a target="_blank" href="{{ app.apk_url }}">{{ app.apk_url }}</a></h6>
+            <div class="card-body">
+
+                <div class="row ">
+                    <div class="col-md-6 image_ava">
+                    {% if app.type == 'WEB' %}
+                    <img src="https://daproim.com/wp-content/uploads/2017/09/webdesign-1.png" class="img-thumbnail rounded mx-auto d-block" alt="avatar"/>
+                    {% else %}
+                    <img src="http://dselva.co.in/wp-content/themes/dselva/assets/images/monappdevlp.png" class="img-thumbnail rounded mx-auto d-block" alt="avatar"/>
+                    {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="card-title text-center">Testing tools:</h5>
+                        <ol class="list-inline" type="1">
+                            {%for activity in app.testplans.0.activities %}
+                            <li><span>{{ activity.test_tool.name }}</span></li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+
+              <!-- ↓ Redes ↓ -->
+              <div class="paneles-usuario">
+                <div class="bloques bgf">
+                  <i class="fa fa-facebook"></i>
+                  <span>Versión: {{ app.version }}</span>
+                </div>
+                <div class="bloques bgt">
+                  <i class="fa fa-twitter"></i>
+                  <span>Tipo: {{ app.type }}</span>
+                </div>
+                <div class="bloques bgg">
+                  <i class="fa fa-google-plus"></i>
+                  <span># Test plans: {{ app.testplans|length }}</span>
+                </div>
+              </div>
+              <!-- ↑ Redes ↑ -->
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <h3>
+      Reportes
+        <small class="text-muted">(Reportes generados por cada una de las herramientas)</small>
+    </h3>
+    <ul class="list-group">
+        {%for folder in folders %}
+            <h6>
+              {{ folder.name }}
+            </h6>
+            {%for report in folder.reports %}
+                <li class="list-group-item"><a target="_blank" href="{{ report.path }}">{{ report.name }}</a></li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    <h3>
+      Screenshots
+        <small class="text-muted">(Capturas de pantalla generados de las pruebas)</small>
+    </h3>
+    <ul class="list-group">
+        {%for screenshot in screenshotsFiles %}
+            <h6>
+              {{ screenshot.name }}
+            </h6>
+            {%for file in screenshot.reports %}
+                <li class="list-group-item"><a target="_blank" href="{{ file.path }}">{{ file.name }}</a></li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+
+</div><!-- Container -->
+
+<h5 class="text-center p-3">Copyright © 2018 - Pruebas automatizadas de software</h5>
+
+</body>
+</html>
