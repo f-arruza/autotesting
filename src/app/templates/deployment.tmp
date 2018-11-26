@@ -2,7 +2,7 @@
 # file: deployment.sh
 
 echo DESCARGAR PAQUETE DE CONFIGURACION PRUEBAS
-wget http://autotesting.ac-visiontech.com/media/resources/{{ release_code }}.zip
+wget http://autotesting.ac-visiontech.com:8080/media/resources/{{ release_code }}.zip
 
 echo DESCOMPRIMIR PAQUETE DE CONFIGURACION DE PRUEBAS
 unzip {{ release_code }}.zip

@@ -1,14 +1,14 @@
 import os
 from os.path import dirname
 import time
-from stat import * # ST_SIZE etc
+from stat import *
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib.staticfiles import finders
 import requests
 
 root = "/Users/julian2/PycharmProjects/untitled1/"
-API_ENDPOINT = "http://172.24.41.225/api/v1/projects/1/?format=json"
+API_ENDPOINT = "http://autotesting-api/api/v1/projects/1/?format=json"
 
 htmlFiles = []
 screenshotsFiles = []

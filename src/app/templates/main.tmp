@@ -24,3 +24,19 @@ services:
         - 80:80
     volumes:
         - ./src/results:/reports
+        - ./src/reports-webapp/static:/static
+        - ./src/reports-webapp/media:/media
+    depends_on:
+      - django
+
+  django:
+    build:
+        context: ./dockerfiles/ReportsApplication
+        dockerfile: Dockerfile
+    container_name: reports-webapp
+    command: gunicorn reports-webapp.wsgi:application -t 3600 -w 2 -b :8000 --reload
+    environment:
+        - DJANGO_SETTINGS_MODULE=reports-webapp.settings
+    volumes:
+        - ./src/reports-webapp:/app
+        - ./src/results:/app/static/results

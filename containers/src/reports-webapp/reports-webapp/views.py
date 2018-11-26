@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.staticfiles import finders
 import requests
 
-API_ENDPOINT = "http://172.24.41.225/api/v1/projects/1/?format=json"
+API_ENDPOINT = "http://autotesting.ac-visiontech.com:8080/api/v1/projects/1/?format=json"
 
 htmlFiles = []
 screenshotsFiles = []
@@ -33,7 +33,6 @@ def post_list(request):
     screenshotsFiles = []
     response = requests.get(API_ENDPOINT)
     apiData = response.json()
-    # apiData = {}
     list_all(Folder("root"),
              settings.STATICFILES_DIR_RESULT, ".html", htmlFiles)  # HTML Files
     list_all(Folder("root"), settings.STATICFILES_SCREENSHOTS_DIR_RESULT,

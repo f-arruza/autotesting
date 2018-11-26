@@ -101,6 +101,6 @@ class ReleaseAdmin(admin.ModelAdmin):
     list_display = ('code', 'datetime', 'test_plan',)
 
 
-@admin.register(Deployment)
-class DeploymentAdmin(admin.ModelAdmin):
-    list_display = ('code', 'hostname', 'test_plan',)
+# @admin.register(Deployment)
+# class DeploymentAdmin(admin.ModelAdmin):
+#     list_display = ('code', 'hostname', 'test_plan',)

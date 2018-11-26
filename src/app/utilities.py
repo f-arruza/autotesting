@@ -100,12 +100,51 @@ def generate_deploy_folder(test_plan):
 
     # Descargar configuración de ReportBuilder
     file_path_src = os.path.join(settings.BASE_DIR, 'resources',
-                                 'Report_Builder.zip')
+                                 'dockerfiles/Report_Builder.zip')
     file_path_dest = os.path.join(dockerfiles, 'Report_Builder.zip')
     shutil.copy(file_path_src, file_path_dest)
 
     zip_ref = zipfile.ZipFile(file_path_dest, 'r')
     zip_ref.extractall(dockerfiles)
+    zip_ref.close()
+    os.remove(file_path_dest)
+
+    # Descargar configuración de Nginx
+    file_path_src = os.path.join(settings.BASE_DIR, 'resources',
+                                 'dockerfiles/Nginx.zip')
+    file_path_dest = os.path.join(dockerfiles, 'Nginx.zip')
+    shutil.copy(file_path_src, file_path_dest)
+
+    zip_ref = zipfile.ZipFile(file_path_dest, 'r')
+    zip_ref.extractall(dockerfiles)
+    zip_ref.close()
+    os.remove(file_path_dest)
+
+    # Descargar configuración de ReportsApplication
+    file_path_src = os.path.join(settings.BASE_DIR, 'resources',
+                                 'dockerfiles/ReportsApplication.zip')
+    file_path_dest = os.path.join(dockerfiles, 'ReportsApplication.zip')
+    shutil.copy(file_path_src, file_path_dest)
+
+    zip_ref = zipfile.ZipFile(file_path_dest, 'r')
+    zip_ref.extractall(dockerfiles)
+    zip_ref.close()
+    os.remove(file_path_dest)
+
+    # Crear carpetas para TestSuite y Resultados
+    # source_path = '{}{}'.format(dir, test_tool.source_path.strip('.'))
+    source_path = '{}{}'.format(dir, '/src')
+    if not os.path.exists(source_path):
+        os.makedirs(source_path)
+
+    # Descargar configuración de ReportsApplication - SRC
+    file_path_src = os.path.join(settings.BASE_DIR, 'resources',
+                                 'src/reports-webapp.zip')
+    file_path_dest = os.path.join(source_path, 'reports-webapp.zip')
+    shutil.copy(file_path_src, file_path_dest)
+
+    zip_ref = zipfile.ZipFile(file_path_dest, 'r')
+    zip_ref.extractall(source_path)
     zip_ref.close()
     os.remove(file_path_dest)
 
@@ -126,11 +165,6 @@ def generate_deploy_folder(test_plan):
             zip_ref.extractall(dockerfiles)
             zip_ref.close()
             os.remove(file_path_dest)
-
-        # Crear carpetas para TestSuite y Resultados
-        source_path = '{}{}'.format(dir, test_tool.source_path.strip('.'))
-        if not os.path.exists(source_path):
-            os.makedirs(source_path)
 
         # Descargar TestSuite
         file_path_src = os.path.join(settings.MEDIA_ROOT,
