@@ -1,0 +1,38 @@
+start_test_server_in_background
+query("*")
+query("*")
+query("*")
+start_test_server_in_background
+query("*")
+query("*":text1)
+query("*",:text1)
+query("*")
+query ("*")
+start_test_server_in_background
+query ("*")
+query ("*",:custom_spinner)
+query ("*","custom_spinner")
+start_test_server_in_background
+query ("*")
+query ("*")
+query ("*")
+start_test_server_in_background
+query ("*")
+clear
+query ("*")
+query ("*")
+query ("*")
+start_test_server_in_background
+query ("*")
+start_test_server_in_background
+query ("*")
+start_test_server_in_background
+query ("*")
+query ("*")
+query ("*")
+I scroll down
+query ("*")
+query ("*")
+start_test_server_in_background
+query("*")
+query("*")
