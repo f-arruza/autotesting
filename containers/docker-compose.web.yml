@@ -133,7 +133,7 @@ services:
         dockerfile: Dockerfile
     container_name: vrt-applicaction
     ports:
-        - 8081:80
+        - 8083:80
     volumes:
         - ./src/results/screenshots/cucumber:/var/www/html/screenshots
 
@@ -145,4 +145,8 @@ services:
     ports:
         - 80:80
     volumes:
-        - ./src/results:/reports
+        - ./src/reports-webapp/static:/static
+        - ./src/reports-webapp/media:/media
+        - ./src/results:/static/results
+    depends_on:
+        - django
