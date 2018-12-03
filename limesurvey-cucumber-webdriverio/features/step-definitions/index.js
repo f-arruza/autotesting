@@ -6,11 +6,11 @@ defineSupportCode(({Given, When, Then}) => {
 
     Given('I go to limesurvey login', () => {
         browser.url('admin');
-        browser.waitForVisible('h3=Ingresar:', 10000);
+        browser.waitForVisible('h3=Ingresar:', 20000);
     });
 
     When('I open the login screen', () => {
-        browser.waitForVisible('button=Ingresar', 10000);
+        browser.waitForVisible('button=Ingresar', 20000);
         //browser.click('button=Ingresar:');
     });
 
@@ -74,22 +74,22 @@ defineSupportCode(({Given, When, Then}) => {
     });
 
     Then('I expect to not be able to login', () => {
-        browser.waitForVisible('.alert.alert-danger', 10000);
+        browser.waitForVisible('.alert.alert-danger', 20000);
     });
 
     Then('I expect to be able to login', () => {
-        browser.waitForVisible('#welcome-jumbotron=Esta es la interface de administración de LimeSurvey. Construye tu encuesta desde aquí.', 5000);
+        browser.waitForVisible('#welcome-jumbotron=Esta es la interface de administración de LimeSurvey. Construye tu encuesta desde aquí.', 20000);
     });
 
     Then('I expect to create survey', () => {
-        browser.waitForVisible('button=Structure', 10000);
+        browser.waitForVisible('button=Structure',20000);
     });
 
     Then('I expect to list of surveys', () => {
-        browser.waitForVisible('.pagetitle=Lista de encuesta', 10000);
+        browser.waitForVisible('.pagetitle=Lista de encuesta', 20000);
     });
 
     Then('I expect to search a survey', () => {
-        browser.waitForVisible('.pagetitle=Lista de encuesta', 10000);
+        browser.waitForVisible('.pagetitle=Lista de encuesta', 20000);
     });
 });
