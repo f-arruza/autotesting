@@ -47,7 +47,7 @@
             <?php foreach ($images as $key => $image): ?>
                 <div class="col-lg-6 img-responsive" style="">
                     <h4>Feature <?= $names[$key] ?></h4>
-                    <img class="img-fluid w-100" src="<?= $image ?>" width="500" height="400">
+                    <img class="img-fluid w-100" src="<?= $image ?>" width="500">
                 </div>
                 <?php if($key%2 != 0): ?>
                     <div class="col-lg-12" style="margin-top: 10px">
@@ -58,7 +58,7 @@
                             </span>
                         </h3>
                         <span id="result<?= $key ?>" style="margin: 0 auto;"></span>
-                        <div id="DiffImage<?= $key ?>" style="width: 500px; height: 400px; margin: 10px auto; background-color: #eee;"></div>
+                        <div id="DiffImage<?= $key ?>" style="width: 500px; height: auto; margin: 10px auto; background-color: #eee;"></div>
                     </div>
                 <?php endif; ?>
             <?php endforeach; ?>

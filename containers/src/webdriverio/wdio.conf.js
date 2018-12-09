@@ -26,7 +26,7 @@ exports.config = {
 
     coloredLogs: true,
 
-    screenshotPath: './errorShots/',
+    screenshotPath: '/screenshots/',
 
     baseUrl: 'https://www.google.com',
 
