@@ -56,12 +56,14 @@ class MobileEnvironmentAdmin(admin.ModelAdmin):
 class TestToolAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'version', 'type', 'browser_included',
                     'active',)
+    list_filter = ('type',)
 
 
 @admin.register(Activity)
 class Activity(admin.ModelAdmin):
     list_display = ('id', 'type', 'name', 'execution_datetime', 'test_plan',
                     'test_tool', 'parallel_execution', 'active',)
+    list_filter = ('test_plan',)
 
 
 def generate_descriptor(modeladmin, request, queryset):
@@ -89,6 +91,7 @@ generate_folder.short_description = "Generar Release"
 class TestPlanAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'project', 'application',
                     'active',)
+    list_filter = ('application',)
     actions = [generate_descriptor, generate_folder]
 
     def project(self, obj):
