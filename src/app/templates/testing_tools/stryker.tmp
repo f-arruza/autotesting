@@ -7,4 +7,4 @@
     environment:
         - TEST_PLAN={{ plan_id }}
     volumes:
-      - ./src/results:/reports
+      - ./src/results/reports:/reports
