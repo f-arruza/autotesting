@@ -16,7 +16,7 @@ module.exports = function (config) {
     reporters: ['progress', 'coverage'],
     coverageReporter: {
       type: 'html',
-      dir: '/reports/' + process.env.TEST_PLAN + '/coverage/',
+      dir: '/reports/' + process.env.TEST_PLAN + '/stryker/coverage/',
       reporters: [
         { type: 'html', subdir: '.' }
       ]

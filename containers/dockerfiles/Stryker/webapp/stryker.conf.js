@@ -29,7 +29,7 @@ module.exports = function(config) {
     },
     reporters: ["html", "clear-text", "progress"],
     htmlReporter: {
-        baseDir: '/reports/' + process.env.TEST_PLAN + '/mutation/html'
+        baseDir: '/reports/' + process.env.TEST_PLAN + '/stryker/mutation/html'
     },
     testFramework: 'jasmine',
     coverageAnalysis: 'off',
