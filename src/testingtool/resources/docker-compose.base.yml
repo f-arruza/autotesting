@@ -79,8 +79,8 @@ services:
     ports:
         - 80:80
     volumes:
-        - ./src/results:/reports
         - ./src/reports-webapp/static:/static
+        - ./src/results:/static/results
         - ./src/reports-webapp/media:/media
     depends_on:
       - django

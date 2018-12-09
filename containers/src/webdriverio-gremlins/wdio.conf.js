@@ -28,7 +28,7 @@ exports.config = {
 
     coloredLogs: true,
 
-    screenshotPath: './errorShots/',
+    screenshotPath: '/screenshots/',
 
     baseUrl: 'https://losestudiantes.co',
 
