@@ -60,6 +60,15 @@ services:
         - ./src/webdriverio-gremlins:/app
         - ./src/results/jsons:/reports
 
+  report_builder:
+    build:
+        context: ./dockerfiles/Report_Builder
+        dockerfile: Dockerfile
+    container_name: report_builder
+    command: node scripts/test.js
+    volumes:
+        - ./src/results:/data
+
   webdriverio-cucumber:
     build:
         context: ./dockerfiles/WebdriverIO_Chrome_Firefox

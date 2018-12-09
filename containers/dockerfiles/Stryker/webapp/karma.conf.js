@@ -16,7 +16,7 @@ module.exports = function (config) {
     reporters: ['progress', 'coverage'],
     coverageReporter: {
       type: 'html',
-      dir: '/reports/coverage/',
+      dir: '/reports/' + process.env.TEST_PLAN + '/coverage/',
       reporters: [
         { type: 'html', subdir: '.' }
       ]

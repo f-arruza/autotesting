@@ -29,7 +29,7 @@ module.exports = function(config) {
     },
     reporters: ["html", "clear-text", "progress"],
     htmlReporter: {
-        baseDir: '/reports/mutation/html' // this is the default
+        baseDir: '/reports/' + process.env.TEST_PLAN + '/mutation/html'
     },
     testFramework: 'jasmine',
     coverageAnalysis: 'off',

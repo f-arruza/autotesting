@@ -28,8 +28,8 @@ function traverseAndModifyTimedOut (target, deep) {
   }
 }
 
-function combineMochaAwesomeReports() {
-  const reportDir = path.join('/data/jsons');
+function combineMochaAwesomeReports(input) {
+  const reportDir = path.join(input);
   console.log("reportDir" + reportDir);
   const reports = getFiles(reportDir, '.json', []);
   const suites = [];
