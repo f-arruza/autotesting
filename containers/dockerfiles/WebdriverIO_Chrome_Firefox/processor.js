@@ -47,30 +47,38 @@ var execute_preprocessor = function(src) {
         let line;
         let lineNumber = 0;
         var fileContent = '';
+        var randomExamplesNumber = 1;
         while (line = liner.next()) {
           if(line.indexOf('Scenario') != -1) {
             console.log(myMap);
             console.log("Procesando nuevo Scenario->"+ (myMap.size>0))
             if(myMap.size>0) {
-              fileContent+= createTable(myMap);
+              fileContent+= createTable(myMap, randomExamplesNumber);
             }
             myMap = new Map();
           }
           fileContent+= line.toString('ascii') +"\n";
-            var result = getFromBetween.get(String(line),"<",">");
-            addParamsToMap(result);
-            lineNumber++;
+          var result = getFromBetween.get(String(line),"<",">");
+          addParamsToMap(result);
+
+          var tempVar = getFromBetween.get(String(line),"[randomExamples=","]");
+          if (tempVar != false){
+            console.log("Random examples number = " + tempVar);
+            randomExamplesNumber = Number(tempVar);
+          }
+          
+          lineNumber++;
         }
         if(myMap.size>0) {
-            fileContent+= createTable(myMap);
+            fileContent+= createTable(myMap, randomExamplesNumber);
             myMap = new Map();
         }
-        // console.log("\n\n"+fileContent);
+        console.log("\n\n"+fileContent);
         var filePath = path.join(outputFolder, childItemName);
         if(fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
         }
-        // console.log(" - " + filePath);
+        console.log(" - " + filePath);
         fs.writeFile(filePath, fileContent, function(err) {
           if(err) {
              console.log(err);
@@ -83,18 +91,29 @@ var execute_preprocessor = function(src) {
   }
 };
 
-var createTable = function(myMap) {
+var createTable = function(myMap, randomExamplesNumber) {
   var tableStr = "    Examples:\n";
   tableStr+= "     |";
   for (let [key, value] of myMap.entries()) {
-      tableStr+= key  +"      | ";
+      tableStr+= key  +"             | ";
   }
 
+  console.log("creando table con #" + randomExamplesNumber + " records.");
+  for (var i = 0; i < randomExamplesNumber;i++) {
+    tableStr+= "\n";
+    tableStr+= "     |";
+    for (let [key, value] of myMap.entries()) {
+        tableStr+= getFaker(key)  +"             | ";
+    }
+  }
+
+  /*
   tableStr+= "\n";
   tableStr+= "     |";
   for (let [key, value] of myMap.entries()) {
       tableStr+= value  +"      | ";
   }
+  */
   tableStr+= "\n\n";
   return tableStr;
 }
