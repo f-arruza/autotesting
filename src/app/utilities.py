@@ -107,6 +107,7 @@ def generate_deploy_folder(test_plan):
     shutil.copy(file_path_src, file_path_dest)
 
     zip_ref = zipfile.ZipFile(file_path_dest, 'r')
+    zip_ref.extractall(dir)
     zip_ref.close()
     os.remove(file_path_dest)
 
