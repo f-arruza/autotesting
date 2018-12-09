@@ -11,8 +11,11 @@ echo INGRESAR A CARPETA
 cd {{ release_code }}
 
 echo DESCARGAR Y CONSTRUIR IMAGENES DE CONTENEDORES
-docker-compose pull
-docker-compose build
+docker-compose -f docker-compose.base.yml pull
+docker-compose -f docker-compose.base.yml build
 
 echo LISTAR IMAGENES DE CONTENEDORES
 docker images
+
+echo INICIAR CONTENEDORES
+docker-compose -f docker-compose.base.yml up -d

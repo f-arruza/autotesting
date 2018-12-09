@@ -33,7 +33,7 @@ exports.config = {
 
     screenshotPath: '/screenshots/',
 
-    baseUrl: 'https://losestudiantes.co',
+    baseUrl: 'http://172.24.41.187/limesurvey/',
 
     waitforTimeout: 10000,
 
@@ -59,7 +59,7 @@ exports.config = {
         profile: [],        // <string[]> (name) specify the profile to use
         strict: false,      // <boolean> fail if there are any undefined or pending steps
         tags: [],           // <string[]> (expression) only execute the features or scenarios with tags matching the expression
-        timeout: 20000,     // <number> timeout for step definitions
+        timeout: 50000,     // <number> timeout for step definitions
         ignoreUndefinedDefinitions: false, // <boolean> Enable this config to treat undefined definitions as warnings.
     },
     afterStep: function (stepResult) {

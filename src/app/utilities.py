@@ -88,10 +88,16 @@ def generate_deploy_folder(test_plan):
         shutil.rmtree(dir)
     os.makedirs(dir)
 
-    # Descargar descriptor de despliegue
+    # Descargar descriptor de despliegue configurado
     file_path_src = os.path.join(settings.MEDIA_ROOT,
                                  test_plan.descriptor_file.path)
     file_path_dest = os.path.join(dir, 'docker-compose.yml')
+    shutil.copy(file_path_src, file_path_dest)
+
+    # Descargar descriptor de despliegue base
+    file_path_src = os.path.join(settings.BASE_DIR, 'resources',
+                                 'docker-compose.base.yml')
+    file_path_dest = os.path.join(dir, 'docker-compose.base.yml')
     shutil.copy(file_path_src, file_path_dest)
 
     # Descargar descriptores de las herramientas involucradas

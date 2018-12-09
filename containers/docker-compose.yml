@@ -2,28 +2,61 @@ version: '3'
 
 services:
 
-  nginx:
-    build:
-        context: ./dockerfiles/Nginx
-        dockerfile: Dockerfile
-    container_name: nginx
-    ports:
-        - 80:80
-    volumes:
-        - ./src/results:/reports
-        - ./src/reports-webapp/static:/static
-        - ./src/reports-webapp/media:/media
-    depends_on:
-      - django
+  # nginx:
+  #   build:
+  #       context: ./dockerfiles/Nginx
+  #       dockerfile: Dockerfile
+  #   container_name: nginx
+  #   ports:
+  #       - 80:80
+  #   volumes:
+  #       - ./src/results:/reports
+  #       - ./src/reports-webapp/static:/static
+  #       - ./src/reports-webapp/media:/media
+  #   depends_on:
+  #     - django
 
-  django:
-    build:
-      context: ./dockerfiles/ReportsApplication
-      dockerfile: Dockerfile
-    container_name: reports-webapp
-    command: gunicorn reports-webapp.wsgi:application -t 3600 -w 2 -b :8000 --reload
+  # django:
+  #   build:
+  #     context: ./dockerfiles/ReportsApplication
+  #     dockerfile: Dockerfile
+  #   container_name: reports-webapp
+  #   command: gunicorn reports-webapp.wsgi:application -t 3600 -w 2 -b :8000 --reload
+  #   environment:
+  #     - DJANGO_SETTINGS_MODULE=reports-webapp.settings
+  #   volumes:
+  #     - ./src/reports-webapp:/app
+  #     - ./src/results:/app/static/results
+
+  hub:
+    image: selenium/hub
+    container_name: hub
+    ports:
+        - 8081:4444
+
+  chrome:
+    image: selenium/node-chrome
+    ports:
+        - 5900
     environment:
-      - DJANGO_SETTINGS_MODULE=reports-webapp.settings
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    depends_on:
+        - hub
+
+  webdriverio-cucumber:
+    build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+    container_name: webdriverio-cucumber
+    entrypoint: /opt/bin/./entry-point.sh
+    depends_on:
+        - hub
+        - chrome
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
     volumes:
-      - ./src/reports-webapp:/app
-      - ./src/results:/app/static/results
+        - ./src/webdriverio-cucumber:/app
+        - ./src/results/jsons:/reports
+        - ./src/results/screenshots/cucumber:/screenshots

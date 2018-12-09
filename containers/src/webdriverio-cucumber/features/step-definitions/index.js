@@ -1,97 +1,95 @@
+//Complete siguiendo las instrucciones del taller
 var {defineSupportCode} = require('cucumber');
 var {expect} = require('chai');
 
 defineSupportCode(({Given, When, Then}) => {
-  Given('I go to losestudiantes home screen', () => {
-    browser.url('/');
-    if(browser.isVisible('button=Cerrar')) {
-      browser.click('button=Cerrar');
-    }
-  });
 
-  When('I open the login screen', () => {
-    browser.waitForVisible('button=Ingresar', 5000);
-    browser.click('button=Ingresar');
-  });
+    Given('I go to limesurvey login', () => {
+        browser.url('admin');
+        browser.waitForVisible('h3=Ingresar:', 20000);
+    });
 
-  When(/^I fill with (.*) and (.*)$/ , (email, password) => {
-    var cajaLogIn = browser.element('.cajaLogIn');
+    When('I open the login screen', () => {
+        browser.waitForVisible('button=Ingresar', 20000);
+        //browser.click('button=Ingresar:');
+    });
 
-    var mailInput = cajaLogIn.element('input[name="correo"]');
-    mailInput.click();
-    mailInput.keys(email);
+    When('I fill a wrong username and password', () => {
+        var cajaLogIn = browser.element('.login-content-form');
 
-    var passwordInput = cajaLogIn.element('input[name="password"]');
-    passwordInput.click();
-    passwordInput.keys(password)
-  });
+        var mailInput = cajaLogIn.element('input[name="user"]');
+        mailInput.click();
+        mailInput.keys('wrongusername');
 
-  When('I try to login', () => {
-    var cajaLogIn = browser.element('.cajaLogIn');
-    cajaLogIn.element('button=Ingresar').click()
-  });
+        var passwordInput = cajaLogIn.element('input[name="password"]');
+        passwordInput.click();
+        passwordInput.keys('55555555')
+    });
 
-  When(/^Fill with (.*), (.*), (.*), (.*) and (.*)$/ , (firstname, lastname, email, password, degree) => {
-    var cajaSignUp = browser.element('.cajaSignUp');
-    var nameInput = cajaSignUp.element('input[name="nombre"]');
-    nameInput.click();
-    nameInput.keys(firstname);
+    When('I fill a good username and password', () => {
+        var cajaLogIn = browser.element('.login-content-form');
 
-    var lastNameInput = cajaSignUp.element('input[name="apellido"]');
-    lastNameInput.click();
-    lastNameInput.keys(lastname);
+        var mailInput = cajaLogIn.element('input[name="user"]');
+        mailInput.click();
+        mailInput.keys('admin');
 
-    var mailInput = cajaSignUp.element('input[name="correo"]');
-    mailInput.click();
-    mailInput.keys(email);
+        var passwordInput = cajaLogIn.element('input[name="password"]');
+        passwordInput.click();
+        passwordInput.keys('123456789')
+    });
 
-    var passwordInput = cajaSignUp.element('input[name="password"]');
-    passwordInput.click();
-    passwordInput.keys(password);
+    When('I fill fields for create survey', () => {
+        var createSurveyBox = browser.element('.ls-panelboxes .selector__create_survey');
+        createSurveyBox.click();
 
-    cajaSignUp.element('select[name="idPrograma"]').selectByValue(degree);
-  });
+        var cajaTitle = browser.element('#texts');
+        var titleInput = cajaTitle.element('#surveyls_title');
+        titleInput.click();
+        titleInput.keys("Survey MISO - BDT Test");
 
-  Then('I try to create an account {string}' , agreeTerms => {
-    var cajaSignUp = browser.element('.cajaSignUp');
-    if(agreeTerms=="true")
-      cajaSignUp.element('input[name="acepta"]').click();
+        var cajaButtonSave = browser.element('.menubar');
+        var buttonSave = cajaButtonSave.element('a[id="save-form-button"]');
+        buttonSave.click();
+    });
 
-    browser.click('button=Registrarse');
-  });
+    When('I try see list of surveys', () => {
+        var listSurveyBox = browser.element('.ls-panelboxes .selector__list_surveys');
+        listSurveyBox.click();
+    });
 
-  Then('I expect to see {string}', error => {
-      browser.waitForVisible('.aviso.alert.alert-danger', 5000);
-      var alertText = browser.element('.aviso.alert.alert-danger').getText();
-      expect(alertText).to.include(error);
-  });
+    When('I try search and see a survey choosed', () => {
+        var searchSurveyBox = browser.element('#surveys');
+        var searchInput = searchSurveyBox.element('input[name="Survey[searched_value]"]');
+        searchInput.click();
+        searchInput.keys("Survey MISO - BDT Test");
 
-  Then('I expect to see user icon',() => {
-    browser.waitForVisible('#cuenta', 5000);
-    browser.element('#cuenta').click();
-  });
+        var buttonSuccess = browser.element('#surveys .btn-success');
+        buttonSuccess.click();
 
-  Then('I will see the alert {string}', message => {
-    browser.waitForVisible('.sweet-alert', 5000);
-    var alert = browser.element('//*[@id="__next"]/div/div/div[1]/div/div/div[2]/div[2]/div').getText()
-    expect(alert).to.include(message);
-  });
+    });
 
-  Then('I will see validate {string}', message => {
-    var alert = browser.element('div[role="alert"]').getText()
-    expect(alert).to.include(message);
-  });
+    When('I try to login', () => {
+        var cajaLogIn = browser.element('.login-submit');
+        cajaLogIn.element('button[name="login_submit"]').click();
+    });
 
-  Then(/^The css (.*) has to be red$/, controlName => {
-    var control;
-    if(controlName == "name"){
-        control = browser.element('/html/body/div[3]/div[2]/div/div/div/div/div/div[1]/div/form/fieldset[1]/div');
-    }else if(controlName == "lastname"){
-      control = browser.element('/html/body/div[3]/div[2]/div/div/div/div/div/div[1]/div/form/fieldset[2]/div');
-    }else if(controlName == "degree"){
-      control = browser.element('/html/body/div[3]/div[2]/div/div/div/div/div/div[1]/div/form/div/fieldset[1]');
-    }
-     control.waitForVisible('.has-error', 1000);
-  });
+    Then('I expect to not be able to login', () => {
+        browser.waitForVisible('.alert.alert-danger', 20000);
+    });
 
+    Then('I expect to be able to login', () => {
+        browser.waitForVisible('#welcome-jumbotron=Esta es la interface de administración de LimeSurvey. Construye tu encuesta desde aquí.', 20000);
+    });
+
+    Then('I expect to create survey', () => {
+        browser.waitForVisible('button=Structure',20000);
+    });
+
+    Then('I expect to list of surveys', () => {
+        browser.waitForVisible('.pagetitle=Lista de encuesta', 20000);
+    });
+
+    Then('I expect to search a survey', () => {
+        browser.waitForVisible('.pagetitle=Lista de encuesta', 20000);
+    });
 });
