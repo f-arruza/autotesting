@@ -10,6 +10,7 @@
     environment:
         - HUB_PORT_4444_TCP_ADDR=hub
         - HUB_PORT_4444_TCP_PORT=4444
+        - TEST_PLAN={{ plan_id }}
     volumes:
         - {{ source_path }}:/app
         - ./src/results/jsons:/reports

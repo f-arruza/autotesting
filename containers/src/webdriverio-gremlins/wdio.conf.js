@@ -28,9 +28,9 @@ exports.config = {
 
     coloredLogs: true,
 
-    screenshotPath: '/screenshots/',
+    screenshotPath: '/screenshots/' + process.env.TEST_PLAN + '/',
 
-    baseUrl: 'https://losestudiantes.co',
+    baseUrl: 'http://172.24.41.187/limesurvey/',
 
     waitforTimeout: 10000,
 
@@ -39,7 +39,7 @@ exports.config = {
     reporters: ['mochawesome'],
 
     reporterOptions: {
-        outputDir: '/reports/',
+        outputDir: '/reports/' + process.env.TEST_PLAN + '/',
         mochawesome_filename: 'webdriverio-random-testing.json'
     },
 

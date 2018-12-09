@@ -37,7 +37,8 @@ def generate_deploy_descriptor(test_plan):
                                     container_label=test_tool.container_label,
                                     container_desc=test_tool.container_desc,
                                     command=test_tool.command,
-                                    source_path=test_tool.source_path)
+                                    source_path=test_tool.source_path,
+                                    plan_id=test_plan.id)
         else:
             # NOTE: Incluir dependencias con navegadores
             browsers = []
@@ -54,7 +55,8 @@ def generate_deploy_descriptor(test_plan):
                                     container_desc=test_tool.container_desc,
                                     command=test_tool.command,
                                     source_path=test_tool.source_path,
-                                    browsers=browsers)
+                                    browsers=browsers,
+                                    plan_id=test_plan.id)
         tools.append({'descriptor': descriptor})
 
     # NOTE: Generar descriptor de despliegue y adjuntarlo al TestPlan

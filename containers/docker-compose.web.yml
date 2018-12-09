@@ -111,21 +111,8 @@ services:
         dockerfile: Dockerfile
     container_name: stryker
     command: npm run stryker
-    depends_on:
-        - nginx
     volumes:
       - ./src/results/stryker:/reports
-
-  report_builder:
-    build:
-        context: ./dockerfiles/Report_Builder
-        dockerfile: Dockerfile
-    container_name: report_builder
-    command: node scripts/test.js
-    depends_on:
-        - nginx
-    volumes:
-        - ./src/results:/data
 
   vrtapp:
     build:
@@ -136,17 +123,3 @@ services:
         - 8083:80
     volumes:
         - ./src/results/screenshots/cucumber:/var/www/html/screenshots
-
-  nginx:
-    build:
-        context: ./dockerfiles/Nginx
-        dockerfile: Dockerfile
-    container_name: nginx
-    ports:
-        - 80:80
-    volumes:
-        - ./src/reports-webapp/static:/static
-        - ./src/reports-webapp/media:/media
-        - ./src/results:/static/results
-    depends_on:
-        - django

@@ -26,7 +26,7 @@ exports.config = {
 
     coloredLogs: true,
 
-    screenshotPath: '/screenshots/',
+    screenshotPath: '/screenshots/' + process.env.TEST_PLAN + '/',
 
     baseUrl: 'https://www.google.com',
 
@@ -37,7 +37,7 @@ exports.config = {
     reporters: ['mochawesome'],
 
     reporterOptions: {
-        outputDir: '/reports/',
+        outputDir: '/reports/' + process.env.TEST_PLAN + '/',
         mochawesome_filename: 'webdriverio-headless-testing.json'
     },
 

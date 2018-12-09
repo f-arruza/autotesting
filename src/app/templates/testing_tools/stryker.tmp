@@ -4,5 +4,7 @@
         dockerfile: Dockerfile
     container_name: {{ container_label }}
     command: {{ command }}
+    environment:
+        - TEST_PLAN={{ plan_id }}
     volumes:
       - ./src/results/stryker:/reports

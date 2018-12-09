@@ -1,33 +1,6 @@
 version: '3'
 
 services:
-
-  # nginx:
-  #   build:
-  #       context: ./dockerfiles/Nginx
-  #       dockerfile: Dockerfile
-  #   container_name: nginx
-  #   ports:
-  #       - 80:80
-  #   volumes:
-  #       - ./src/results:/reports
-  #       - ./src/reports-webapp/static:/static
-  #       - ./src/reports-webapp/media:/media
-  #   depends_on:
-  #     - django
-
-  # django:
-  #   build:
-  #     context: ./dockerfiles/ReportsApplication
-  #     dockerfile: Dockerfile
-  #   container_name: reports-webapp
-  #   command: gunicorn reports-webapp.wsgi:application -t 3600 -w 2 -b :8000 --reload
-  #   environment:
-  #     - DJANGO_SETTINGS_MODULE=reports-webapp.settings
-  #   volumes:
-  #     - ./src/reports-webapp:/app
-  #     - ./src/results:/app/static/results
-
   hub:
     image: selenium/hub
     container_name: hub
@@ -44,6 +17,49 @@ services:
     depends_on:
         - hub
 
+  firefox:
+    image: selenium/node-firefox
+    ports:
+        - 5900
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    depends_on:
+        - hub
+
+  webdriverio:
+    build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+    container_name: webdriverio
+    depends_on:
+        - hub
+        - chrome
+        - firefox
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+        - TEST_PLAN=1
+    volumes:
+        - ./src/webdriverio:/app
+        - ./src/results/jsons:/reports
+
+  webdriverio-gremlins:
+    build:
+        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        dockerfile: Dockerfile
+    container_name: webdriverio-gremlins
+    depends_on:
+        - hub
+        - chrome
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+        - TEST_PLAN=1
+    volumes:
+        - ./src/webdriverio-gremlins:/app
+        - ./src/results/jsons:/reports
+
   webdriverio-cucumber:
     build:
         context: ./dockerfiles/WebdriverIO_Chrome_Firefox
@@ -56,7 +72,8 @@ services:
     environment:
         - HUB_PORT_4444_TCP_ADDR=hub
         - HUB_PORT_4444_TCP_PORT=4444
+        - TEST_PLAN=1
     volumes:
         - ./src/webdriverio-cucumber:/app
         - ./src/results/jsons:/reports
-        - ./src/results/screenshots/cucumber:/screenshots
+        - ./src/results/screenshots:/screenshots

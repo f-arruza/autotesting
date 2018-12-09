@@ -3,7 +3,9 @@
         context: ./dockerfiles/{{ container_desc }}
         dockerfile: Dockerfile
     container_name: {{ container_label }}
+    environment:
+        - TEST_PLAN={{ plan_id }}
     ports:
         - 8081:80
     volumes:
-      - ./src/results/screenshots/cucumber:/var/www/html/screenshots
+      - ./src/results/screenshots:/var/www/html/screenshots

@@ -18,7 +18,6 @@ exports.config = {
       maxInstances: 5,
 
       browserName: 'chrome',
-      aut_version: '1.0.1',
       chromeOptions: {
           args: [ "--headless", "--disable-gpu", "--window-size=800,600" ]
       }
@@ -31,7 +30,7 @@ exports.config = {
 
     coloredLogs: true,
 
-    screenshotPath: '/screenshots/',
+    screenshotPath: '/screenshots/' + process.env.TEST_PLAN + '/',
 
     baseUrl: 'http://172.24.41.187/limesurvey/',
 
@@ -42,7 +41,7 @@ exports.config = {
     reporters: ['mochawesome'],
 
     reporterOptions: {
-        outputDir: '/reports/',
+        outputDir: '/reports/' + process.env.TEST_PLAN + '/',
         mochawesome_filename: 'webdriverio-behavior-driven-testing.json'
     },
 
@@ -62,19 +61,21 @@ exports.config = {
         timeout: 50000,     // <number> timeout for step definitions
         ignoreUndefinedDefinitions: false, // <boolean> Enable this config to treat undefined definitions as warnings.
     },
+
     afterStep: function (stepResult) {
       var path = browser.options.screenshotPath;
       var featureName = stepResult.step.scenario.uri.replace(process.cwd(), "").split("/").join("_").replace(".feature", "");
-
-      var version = browser.options.desiredCapabilities.aut_version;
-      var datetime = new Date().getTime();
-
-      if(!fs.existsSync(path + version)) {
-        fs.mkdirSync(path + version);
+      if(!fs.existsSync(path)) {
+        fs.mkdirSync(path);
       }
-      var fileName = path + version + '/' + browser.options.desiredCapabilities.browserName +
+      path = path + 'cucumber' + '/';
+      if(!fs.existsSync(path)) {
+        fs.mkdirSync(path);
+      }
+
+      var datetime = new Date().getTime();
+      var fileName = path + '/' + browser.options.desiredCapabilities.browserName +
           featureName + '_' + datetime + '.png';
-      console.log(fileName);
       browser.saveScreenshot(fileName);
     },
 }
