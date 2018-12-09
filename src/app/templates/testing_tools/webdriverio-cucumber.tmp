@@ -14,4 +14,4 @@
     volumes:
         - {{ source_path }}:/app
         - ./src/results/jsons:/reports
-        - ./src/results/screenshots/cucumber:/screenshots
+        - ./src/results/screenshots:/screenshots
