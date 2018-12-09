@@ -10,6 +10,7 @@ wget http://autotesting.ac-visiontech.com:8080/media/releases/{{ release_code }}
 
 echo DESCOMPRIMIR PAQUETE DE CONFIGURACION DE PRUEBAS
 unzip {{ release_code }}.zip
+rm {{ release_code }}.zip
 
 echo DESCARGAR Y CONSTRUIR IMAGENES DE CONTENEDORES
 docker-compose -f docker-compose.base.yml pull

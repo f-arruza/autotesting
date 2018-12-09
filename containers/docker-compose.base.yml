@@ -95,3 +95,4 @@ services:
       - DJANGO_SETTINGS_MODULE=reports-webapp.settings
     volumes:
       - ./src/reports-webapp:/app
+      - ./src/results:/app/static/results
