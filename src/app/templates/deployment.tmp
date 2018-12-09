@@ -1,14 +1,15 @@
 #!/bin/bash
 # file: deployment.sh
 
+echo CREAR E INGRESAR A CARPETA
+mkdir {{ release_code }}
+cd {{ release_code }}
+
 echo DESCARGAR PAQUETE DE CONFIGURACION PRUEBAS
-wget http://autotesting.ac-visiontech.com:8080/media/resources/{{ release_code }}.zip
+wget http://autotesting.ac-visiontech.com:8080/media/releases/{{ release_code }}.zip
 
 echo DESCOMPRIMIR PAQUETE DE CONFIGURACION DE PRUEBAS
 unzip {{ release_code }}.zip
-
-echo INGRESAR A CARPETA
-cd {{ release_code }}
 
 echo DESCARGAR Y CONSTRUIR IMAGENES DE CONTENEDORES
 docker-compose -f docker-compose.base.yml pull

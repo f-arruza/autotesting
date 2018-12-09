@@ -94,10 +94,10 @@ def generate_deploy_folder(test_plan):
     file_path_dest = os.path.join(dir, 'docker-compose.yml')
     shutil.copy(file_path_src, file_path_dest)
 
-    # Descargar descriptor de despliegue base
+    # Descargar configuración de dashboard de Grafana
     file_path_src = os.path.join(settings.BASE_DIR, 'resources',
-                                 'docker-compose.base.yml')
-    file_path_dest = os.path.join(dir, 'docker-compose.base.yml')
+                                 'monitoring.zip')
+    file_path_dest = os.path.join(dir, 'monitoring.zip')
     shutil.copy(file_path_src, file_path_dest)
 
     # Descargar descriptores de las herramientas involucradas
