@@ -171,6 +171,8 @@ def generate_deploy_folder(test_plan):
         if activity.type == '02' and not test_tool.active:
             continue
 
+        print('ACT_GENERAL: ' + activity.name.lower())
+        print('ACT_GENERAL_TYPE: ' + activity.type)
         if activity.type == '02':
             # Descargar y descomprimir descriptores
             if test_tool.descriptor_file:
@@ -185,6 +187,7 @@ def generate_deploy_folder(test_plan):
                 zip_ref.close()
                 os.remove(file_path_dest)
         else:
+            print('ACT_SCRIPT: ' + activity.name.lower())
             if activity.script:
                 file_path_src = os.path.join(settings.MEDIA_ROOT,
                                              activity.script.path)
