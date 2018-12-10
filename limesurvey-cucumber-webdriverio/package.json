@@ -9,12 +9,14 @@
   "author": "Sebastian Sierra",
   "license": "ISC",
   "devDependencies": {
-    "chai": "^4.1.2",
-    "wdio-cucumber-framework": "^1.0.2",
+    "chai": "^4.2.0",
+    "line-reader": "^0.4.0",
+    "wdio-cucumber-framework": "^1.1.1",
     "wdio-selenium-standalone-service": "0.0.9",
-    "wdio-spec-reporter": "^0.1.2"
+    "wdio-spec-reporter": "^0.1.5"
   },
   "dependencies": {
-    "webdriverio": "^4.8.0"
+    "faker": "^4.1.0",
+    "webdriverio": "^4.14.1"
   }
 }
