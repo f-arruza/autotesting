@@ -9,3 +9,11 @@ Feature: Create surveys in page
     And I expect to be able to login
     And I fill fields for create survey with <randomWord>
     Then I expect to create survey
+    Examples:
+     |randomWord             | 
+     |quod             | 
+     |ullam             | 
+     |non             | 
+     |itaque             | 
+     |iure             | 
+

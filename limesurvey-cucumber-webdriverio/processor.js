@@ -5,7 +5,7 @@ const lineByLine = require('./readlines.js');
 var path = require('path');
 var faker = require('faker');
 
-var src = "limesurvey-cucumber-webdriverio/input/features";
+var src = "C:/Users/wilme/Documents/autotesting/limesurvey-cucumber-webdriverio/input/features";
 
 String.prototype.contains = function(test) {
     return this.indexOf(test) == -1 ? false : true;
