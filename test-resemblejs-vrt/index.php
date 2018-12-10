@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Comparación de screenshots</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -16,18 +18,18 @@
                         <label for="directorio1">Escoja la version a comparar:</label>
                         <select name="directorio1" id="directorio1" class="form-control">
                             <option value="">Seleccione</option>
-                            <?php foreach ($directorios as $directorio): ?>
-                                <option value="<?= $directorio ?>"><?= $directorio ?></option>
-                            <?php endforeach; ?>
+                            <?php for($i=0; $i < count($directorios['names']); $i++): ?>
+                                <option value="<?= $directorios['dir'][$i] . "_" . $i; ?>"><?= $directorios['names'][$i]; ?></option>
+                            <?php endfor; ?>
                         </select>
                     </div>
                     <div class="col-lg-6 form-group">
                         <label for="directorio2">Escoja la version a comparar:</label>
                         <select name="directorio2" id="directorio2" class="form-control">
                             <option value="">Seleccione</option>
-                            <?php foreach ($directorios as $directorio): ?>
-                                <option value="<?= $directorio ?>"><?= $directorio ?></option>
-                            <?php endforeach; ?>
+                            <?php for($i=0; $i < count($directorios['names']); $i++): ?>
+                                <option value="<?= $directorios['dir'][$i] . "_" . $i; ?>"><?= $directorios['names'][$i] ?></option>
+                            <?php endfor; ?>
                         </select>
                     </div>
                     <div class="col-lg-6 form-group">
@@ -38,6 +40,7 @@
         </div>
         <?php if($base_1 != $base_2): ?>
         <div class="row">
+            <h2><strong><?= $title ?></strong></h2>
             <div class="col-lg-12">
                 <h3>Índice</h3>
                 <div id="indice" class="indice">
@@ -50,7 +53,7 @@
                     <img class="img-fluid w-100" src="<?= $image ?>" width="500">
                 </div>
                 <?php if($key%2 != 0): ?>
-                    <div class="col-lg-12" style="margin-top: 10px">
+                    <div class="col-lg-12" style="margin-top: 10px; border: black 2px solid;">
                         <a name="comp<?= $key ?>" id="comp<?= $key ?>"></a>
                         <h3>
                             <span class="label label-info">
@@ -69,6 +72,7 @@
                 <strong><?= $mensaje; ?>!</strong>
             </div>
         <?php endif; ?>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="resemble.js"></script>
