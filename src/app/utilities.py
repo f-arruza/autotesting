@@ -166,7 +166,7 @@ def generate_deploy_folder(test_plan):
     zip_ref.close()
     os.remove(file_path_dest)
 
-    for activity in test_plan.activities.filter(active=True, type='02'):
+    for activity in test_plan.activities.filter(active=True):
         test_tool = activity.test_tool
         if activity.type == '02' and not test_tool.active:
             continue
