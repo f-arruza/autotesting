@@ -9,3 +9,4 @@
     volumes:
         - {{ source_path }}:/install/test
         - ./src/results/jsons:/reports
+        - ./src/results:/media
