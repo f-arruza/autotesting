@@ -134,7 +134,8 @@ def get_descriptor_upload_path(instance, filename):
 
 
 def get_test_suite_upload_path(instance, filename):
-    return "test_suites/{}.zip".format(instance.code)
+    ext = os.path.splitext(filename)[1]
+    return "test_suites/{}.{}".format(instance.code, ext)
 
 
 def validate_file_extension_zip(value):
