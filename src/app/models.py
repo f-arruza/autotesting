@@ -135,7 +135,7 @@ def get_descriptor_upload_path(instance, filename):
 
 def get_test_suite_upload_path(instance, filename):
     ext = os.path.splitext(filename)[1]
-    return "test_suites/{}.{}".format(instance.code, ext)
+    return "test_suites/{}{}".format(instance.code, ext)
 
 
 def validate_file_extension_zip(value):
@@ -288,7 +288,8 @@ class Activity(models.Model):
     test_tool = models.ForeignKey(TestTool, on_delete=models.CASCADE,
                                   related_name='activities')
     test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
-                                  related_name='activities')
+                                  related_name='activities', null=True,
+                                  blank=True)
     testsuite = models.FileField('Test Suite/Script', null=True,
                                  upload_to=get_test_suite_upload_path,
                                  validators=[validate_file_extension_zip_sh])
