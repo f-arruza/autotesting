@@ -171,7 +171,7 @@ def generate_deploy_folder(test_plan):
         if activity.type = '02' and not test_tool.active:
             continue
 
-        if activity.type = '02':
+        if activity.type == '02':
             # Descargar y descomprimir descriptores
             if test_tool.descriptor_file:
                 file_path_src = os.path.join(settings.MEDIA_ROOT,
