@@ -168,7 +168,7 @@ def generate_deploy_folder(test_plan):
 
     for activity in test_plan.activities.filter(active=True, type='02'):
         test_tool = activity.test_tool
-        if activity.type = '02' and not test_tool.active:
+        if activity.type == '02' and not test_tool.active:
             continue
 
         if activity.type == '02':
