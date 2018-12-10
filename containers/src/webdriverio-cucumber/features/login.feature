@@ -1,7 +1,8 @@
 Feature: Login into losestudiantes
   As an user I want to authenticate myself within limesurvey website
 
-  Scenario: Login failed [randomExamples=5]
+  Scenario Outline: Login failed [randomExamples=5]
+
     Given I go to limesurvey login
     And I fill a wrong <randomUserName> and <randomPassword>
     And I try to login

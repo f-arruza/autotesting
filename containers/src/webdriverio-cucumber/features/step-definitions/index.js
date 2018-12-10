@@ -38,7 +38,7 @@ defineSupportCode(({Given, When, Then}) => {
         passwordInput.keys('123456789')
     });
 
-    When(/^I fill fields for create survey whit (.*)$/, (title) => {
+    When(/^I fill fields for create survey with (.*)$/, (title) => {
         var createSurveyBox = browser.element('.ls-panelboxes .selector__create_survey');
         createSurveyBox.click();
 

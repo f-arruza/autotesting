@@ -13,6 +13,7 @@ services:
     volumes:
         - ./src/cypress:/test
         - ./src/results/jsons:/reports
+        - ./src/results:/media
 
   cypress-electron:
     build:

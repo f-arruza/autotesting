@@ -1,7 +1,7 @@
 {
   "reporter": "mochawesome",
   "reporterOptions": {
-    "reportDir": "/reports",
+    "reportDir": "/reports/1",
     "reportFilename": "cypress-headless-testing.json",
     "quiet": true,
     "html": false,
