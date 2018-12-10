@@ -14,7 +14,7 @@ def generate_deploy_descriptor(test_plan):
     main_tmp = env.get_template('main.tmp')
     commons = {}
 
-    for activity in test_plan.activities.filter(active=True):
+    for activity in test_plan.activities.filter(active=True, type='02'):
         test_tool = activity.test_tool
         if not activity.test_tool.active:
             continue
@@ -151,7 +151,6 @@ def generate_deploy_folder(test_plan):
     os.remove(file_path_dest)
 
     # Crear carpetas para TestSuite y Resultados
-    # source_path = '{}{}'.format(dir, test_tool.source_path.strip('.'))
     source_path = '{}{}'.format(dir, '/src')
     if not os.path.exists(source_path):
         os.makedirs(source_path)
@@ -167,23 +166,31 @@ def generate_deploy_folder(test_plan):
     zip_ref.close()
     os.remove(file_path_dest)
 
-    for activity in test_plan.activities.filter(active=True):
+    for activity in test_plan.activities.filter(active=True, type='02'):
         test_tool = activity.test_tool
-        if not activity.test_tool.active:
+        if activity.type = '02' and not test_tool.active:
             continue
 
-        # Descargar y descomprimir descriptores
-        if test_tool.descriptor_file:
-            file_path_src = os.path.join(settings.MEDIA_ROOT,
-                                         test_tool.descriptor_file.path)
-            file_path_dest = os.path.join(dockerfiles, os.path.basename(
-                                            test_tool.descriptor_file.path))
-            shutil.copy(file_path_src, file_path_dest)
+        if activity.type = '02':
+            # Descargar y descomprimir descriptores
+            if test_tool.descriptor_file:
+                file_path_src = os.path.join(settings.MEDIA_ROOT,
+                                             test_tool.descriptor_file.path)
+                file_path_dest = os.path.join(dockerfiles, os.path.basename(
+                                              test_tool.descriptor_file.path))
+                shutil.copy(file_path_src, file_path_dest)
 
-            zip_ref = zipfile.ZipFile(file_path_dest, 'r')
-            zip_ref.extractall(dockerfiles)
-            zip_ref.close()
-            os.remove(file_path_dest)
+                zip_ref = zipfile.ZipFile(file_path_dest, 'r')
+                zip_ref.extractall(dockerfiles)
+                zip_ref.close()
+                os.remove(file_path_dest)
+        else:
+            if activity.script:
+                file_path_src = os.path.join(settings.MEDIA_ROOT,
+                                             activity.script.path)
+                file_path_dest = os.path.join(dir,
+                                              activity.name.lower() + '.sh')
+                shutil.copy(file_path_src, file_path_dest)
 
         # Descargar TestSuite
         file_path_src = os.path.join(settings.MEDIA_ROOT,
