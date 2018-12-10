@@ -290,9 +290,12 @@ class Activity(models.Model):
                                   blank=True)
     test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
                                   related_name='activities')
-    testsuite = models.FileField('Test Suite/Script', null=True,
+    testsuite = models.FileField('Test Suite', null=True,
                                  upload_to=get_test_suite_upload_path,
-                                 validators=[validate_file_extension_zip_sh])
+                                 validators=[validate_file_extension_zip])
+    script = models.FileField('Script', null=True,
+                              upload_to=get_test_suite_upload_path,
+                              validators=[validate_file_extension_sh])
     active = models.BooleanField(default=True)
 
     def __str__(self):
