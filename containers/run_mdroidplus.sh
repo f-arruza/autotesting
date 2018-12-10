@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # Generar mutantes
-# docker-compose -f docker-compose.mobile.yml run --rm mdroidplus
+export MAIN_CLASS="it.feio.android.omninotes"
+docker-compose -f docker-compose.mobile.yml run --rm mdroidplus
 
 # Se crea enlace simbólico a carpeta de Set de Pruebas de Calabash
 ln -s $(pwd $PATH)/src/calabash/features/ $(pwd $PATH)

@@ -1,21 +1,26 @@
 version: '3'
 
 services:
-  android-builder:
-      build:
-          context: ./dockerfiles/Android_Builder
-          dockerfile: Dockerfile
-      container_name: android-builder
-      command: sh -c /scripts/compile.sh
-      volumes:
-          - ./src/android-builder:/application
 
   mdroidplus:
-      build:
-          context: ./dockerfiles/MDroidPlus
-          dockerfile: Dockerfile
-      container_name: mdroidplus
-      command: java -jar MDroidPlus-1.0.0.jar libs4ast/ /app_src it.feio.android.omninotes /mutants ./ false
-      volumes:
-          - ./src/mdroidplus/app_src:/app_src
-          - ./src/mdroidplus/mutants:/mutants
+    build:
+        context: ./dockerfiles/MDroidPlus
+        dockerfile: Dockerfile
+    container_name: mdroidplus
+    command: java -jar MDroidPlus-1.0.0.jar libs4ast/ /app_src ${MAIN_CLASS} /mutants ./ false
+    environment:
+        - TEST_PLAN=2
+    volumes:
+        - ./src/mdroidplus/app_src:/app_src
+        - ./src/mdroidplus/mutants:/mutants
+
+  android-builder:
+    build:
+        context: ./dockerfiles/Android_Builder
+        dockerfile: Dockerfile
+    container_name: android-builder
+    command: sh -c /scripts/compile.sh
+    environment:
+        - TEST_PLAN=2
+    volumes:
+        - ./src/android-builder:/application

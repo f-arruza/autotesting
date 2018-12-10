@@ -145,6 +145,14 @@ def validate_file_extension_zip(value):
         raise ValidationError('Solo se admiten archivos ZIP')
 
 
+def validate_file_extension_zip_sh(value):
+    ext = os.path.splitext(value.name)[1]
+    valid_extensions = ['.zip', '.sh']
+
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Solo se admiten archivos ZIP o SH')
+
+
 def validate_file_extension_yml(value):
     ext = os.path.splitext(value.name)[1]
     valid_extensions = ['.yml']
@@ -261,8 +269,8 @@ class Deployment(models.Model):
 
 class Activity(models.Model):
     type = (
-        ('01', 'Generate Tests'),
-        ('02', 'Run Tests')
+        ('01', 'Script'),
+        ('02', 'Container')
     )
 
     code = models.UUIDField(primary_key=False, default=uuid.uuid4,
@@ -280,9 +288,9 @@ class Activity(models.Model):
                                   related_name='activities')
     test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
                                   related_name='activities')
-    testsuite = models.FileField('Test Suite', null=True,
+    testsuite = models.FileField('Test Suite/Script', null=True,
                                  upload_to=get_test_suite_upload_path,
-                                 validators=[validate_file_extension_zip])
+                                 validators=[validate_file_extension_zip_sh])
     active = models.BooleanField(default=True)
 
     def __str__(self):
