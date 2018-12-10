@@ -293,7 +293,7 @@ class Activity(models.Model):
     testsuite = models.FileField('Test Suite', null=True,
                                  upload_to=get_test_suite_upload_path,
                                  validators=[validate_file_extension_zip])
-    script = models.FileField('Script', null=True,
+    script = models.FileField('Script', null=True, blank=True,
                               upload_to=get_test_suite_upload_path,
                               validators=[validate_file_extension_sh])
     active = models.BooleanField(default=True)
