@@ -286,10 +286,10 @@ class Activity(models.Model):
     parallel_execution = models.BooleanField(default=True)
     command = models.CharField('Command', max_length=500, blank=True)
     test_tool = models.ForeignKey(TestTool, on_delete=models.CASCADE,
-                                  related_name='activities')
-    test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
                                   related_name='activities', null=True,
                                   blank=True)
+    test_plan = models.ForeignKey(TestPlan, on_delete=models.CASCADE,
+                                  related_name='activities')
     testsuite = models.FileField('Test Suite/Script', null=True,
                                  upload_to=get_test_suite_upload_path,
                                  validators=[validate_file_extension_zip_sh])
