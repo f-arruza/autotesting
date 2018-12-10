@@ -14,16 +14,16 @@ defineSupportCode(({Given, When, Then}) => {
         //browser.click('button=Ingresar:');
     });
 
-    When('I fill a wrong username and password', () => {
+    When(/^I fill a wrong (.*) and (.*)$/, (username, password) => {
         var cajaLogIn = browser.element('.login-content-form');
 
         var mailInput = cajaLogIn.element('input[name="user"]');
         mailInput.click();
-        mailInput.keys('wrongusername');
+        mailInput.keys(username);
 
         var passwordInput = cajaLogIn.element('input[name="password"]');
         passwordInput.click();
-        passwordInput.keys('55555555')
+        passwordInput.keys(password)
     });
 
     When('I fill a good username and password', () => {
@@ -38,14 +38,14 @@ defineSupportCode(({Given, When, Then}) => {
         passwordInput.keys('123456789')
     });
 
-    When('I fill fields for create survey', () => {
+    When(/^I fill fields for create survey whit (.*)$/, (title) => {
         var createSurveyBox = browser.element('.ls-panelboxes .selector__create_survey');
         createSurveyBox.click();
 
         var cajaTitle = browser.element('#texts');
         var titleInput = cajaTitle.element('#surveyls_title');
         titleInput.click();
-        titleInput.keys("Survey MISO - BDT Test");
+        titleInput.keys(title);
 
         var cajaButtonSave = browser.element('.menubar');
         var buttonSave = cajaButtonSave.element('a[id="save-form-button"]');

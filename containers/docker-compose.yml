@@ -1,88 +1,14 @@
 version: '3'
 
 services:
-  hub:
-    image: selenium/hub
-    container_name: hub
-    ports:
-        - 8081:4444
-
-  chrome:
-    image: selenium/node-chrome
-    ports:
-        - 5900
-    environment:
-        - HUB_PORT_4444_TCP_ADDR=hub
-        - HUB_PORT_4444_TCP_PORT=4444
-    depends_on:
-        - hub
-
-  firefox:
-    image: selenium/node-firefox
-    ports:
-        - 5900
-    environment:
-        - HUB_PORT_4444_TCP_ADDR=hub
-        - HUB_PORT_4444_TCP_PORT=4444
-    depends_on:
-        - hub
-
-  webdriverio:
+  vrtapp:
     build:
-        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
+        context: ./dockerfiles/VRTApplication
         dockerfile: Dockerfile
-    container_name: webdriverio
-    depends_on:
-        - hub
-        - chrome
-        - firefox
+    container_name: vrt-applicaction
     environment:
-        - HUB_PORT_4444_TCP_ADDR=hub
-        - HUB_PORT_4444_TCP_PORT=4444
         - TEST_PLAN=1
+    ports:
+        - 8083:80
     volumes:
-        - ./src/webdriverio:/app
-        - ./src/results/jsons:/reports
-
-  webdriverio-gremlins:
-    build:
-        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
-        dockerfile: Dockerfile
-    container_name: webdriverio-gremlins
-    depends_on:
-        - hub
-        - chrome
-    environment:
-        - HUB_PORT_4444_TCP_ADDR=hub
-        - HUB_PORT_4444_TCP_PORT=4444
-        - TEST_PLAN=1
-    volumes:
-        - ./src/webdriverio-gremlins:/app
-        - ./src/results/jsons:/reports
-
-  report_builder:
-    build:
-        context: ./dockerfiles/Report_Builder
-        dockerfile: Dockerfile
-    container_name: report_builder
-    command: node scripts/test.js
-    volumes:
-        - ./src/results:/data
-
-  webdriverio-cucumber:
-    build:
-        context: ./dockerfiles/WebdriverIO_Chrome_Firefox
-        dockerfile: Dockerfile
-    container_name: webdriverio-cucumber
-    entrypoint: /opt/bin/./entry-point.sh
-    depends_on:
-        - hub
-        - chrome
-    environment:
-        - HUB_PORT_4444_TCP_ADDR=hub
-        - HUB_PORT_4444_TCP_PORT=4444
-        - TEST_PLAN=1
-    volumes:
-        - ./src/webdriverio-cucumber:/app
-        - ./src/results/jsons:/reports
-        - ./src/results/screenshots:/screenshots
+        - ./src/results/screenshots:/var/www/html/screenshots
