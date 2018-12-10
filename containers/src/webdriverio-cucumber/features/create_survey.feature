@@ -6,5 +6,5 @@ Feature: Create surveys in page
     And I fill a good username and password
     And I try to login
     And I expect to be able to login
-    And I fill fields for create survey
+    And I fill fields for create survey with <randomText>
     Then I expect to create survey
