@@ -124,5 +124,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATICFILES_DIR_RESULT = os.path.join(BASE_DIR, "static/results")
+STATICFILES_REPORTS_DIR_RESULT = os.path.join(BASE_DIR, "static/results/reports")
 STATICFILES_SCREENSHOTS_DIR_RESULT = os.path.join(BASE_DIR, "static/results/screenshots")
