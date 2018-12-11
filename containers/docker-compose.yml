@@ -1,14 +1,28 @@
 version: '3'
 
 services:
-  vrtapp:
+  nginx:
     build:
-        context: ./dockerfiles/VRTApplication
+        context: ./dockerfiles/Nginx
         dockerfile: Dockerfile
-    container_name: vrt-applicaction
-    environment:
-        - TEST_PLAN=1
+    container_name: nginx
     ports:
-        - 8083:80
+        - 80:80
     volumes:
-        - ./src/results/screenshots:/var/www/html/screenshots
+        - ./src/reports-webapp/static:/static
+        - ./src/results:/static/results
+        - ./src/reports-webapp/media:/media
+    depends_on:
+      - django
+
+  django:
+    build:
+      context: ./dockerfiles/ReportsApplication
+      dockerfile: Dockerfile
+    container_name: reports-webapp
+    command: gunicorn reports-webapp.wsgi:application -t 3600 -w 2 -b :8000 --reload
+    environment:
+      - DJANGO_SETTINGS_MODULE=reports-webapp.settings
+    volumes:
+      - ./src/reports-webapp:/app
+      - ./src/results:/app/static/results

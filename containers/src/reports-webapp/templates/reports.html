@@ -13,7 +13,7 @@
 <div class="container">
 
     <h4>
-      Herramienta Pruebas automatizadas MISO V1.0
+      Herramienta Pruebas automatizadas MISO V2.0
     </h4>
     <div class="row">
     {%for app in apiData.applications %}
@@ -54,7 +54,7 @@
                 </div>
                 <div class="bloques bgg">
                   <i class="fa fa-google-plus"></i>
-                  <span># Test plans: {{ app.testplans|length }}</span>
+                  <span># Test Plan ID: {{ app.testplans.0.id }}</span>
                 </div>
               </div>
               <!-- ↑ Redes ↑ -->
@@ -65,31 +65,26 @@
     </div>
 
     <h3>
-      Reportes
-        <small class="text-muted">(Reportes generados por cada una de las herramientas)</small>
+      Planes de pruebas <small class="text-muted">(Evidencias generados por cada una de las herramientas)</small>
     </h3>
     <ul class="list-group">
-        {%for folder in folders %}
-            <h6>
-              {{ folder.name }}
-            </h6>
-            {%for report in folder.reports %}
-                <li class="list-group-item"><a target="_blank" href="{{ report.path }}">{{ report.name }}</a></li>
-            {% endfor %}
-        {% endfor %}
-    </ul>
-    <h3>
-      Screenshots
-        <small class="text-muted">(Capturas de pantalla generados de las pruebas)</small>
-    </h3>
-    <ul class="list-group">
-        {%for screenshot in screenshotsFiles %}
-            <h6>
-              {{ screenshot.name }}
-            </h6>
-            {%for file in screenshot.reports %}
-                <li class="list-group-item"><a target="_blank" href="{{ file.path }}">{{ file.name }}</a></li>
-            {% endfor %}
+        {%for testPlan in testPlans %}
+            <h4 class="p-3 mb-2 bg-success text-white">
+              Plan de prueba # {{ testPlan.name }}
+            </h4>
+                {%for api in testPlan.apis  %}
+
+                <h5>
+                  {{ api.name }}
+                </h5>
+                <ul class="list-group">
+                    {%for file in api.files %}
+                        <li class="list-group-item"><a target="_blank" href="{{ file.path }}">{{ file.name }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                {% endfor %}
+
         {% endfor %}
     </ul>
 

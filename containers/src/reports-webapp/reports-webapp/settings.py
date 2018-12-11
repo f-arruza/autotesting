@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -25,7 +24,7 @@ SECRET_KEY = 'w*xex2it46fzxbd31etmijj+3ryx)&hisxw7ime(s5hf-fi51!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -119,13 +118,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR + '/static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR + '/media/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATICFILES_DIR_RESULT = "/app/static/results"
-STATICFILES_SCREENSHOTS_DIR_RESULT = "/app/static/results/screenshots"
+STATICFILES_REPORTS_DIR_RESULT = os.path.join(BASE_DIR, "static/results/reports")
+STATICFILES_SCREENSHOTS_DIR_RESULT = os.path.join(BASE_DIR, "static/results/screenshots")
