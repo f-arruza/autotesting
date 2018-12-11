@@ -10,6 +10,7 @@ Feature: Varias funcionalidades.
     And I wait for 2 seconds
 
     # Registrar nota de tipo lista de chequeo.
+    When I press view with id "buttonDefaultPositive"
     When I press view with id "fab_expand_menu_button"
     And I wait for 2 seconds
     When I press view with id "fab_checklist"
