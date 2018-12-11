@@ -9,6 +9,7 @@ import requests
 
 API_ENDPOINT = "http://autotesting.ac-visiontech.com:8080/api/v1/projects/1/?format=json"
 
+
 class TestPlan:
     def __init__(self, name):
         self.name = name
@@ -16,6 +17,7 @@ class TestPlan:
 
     def addApi(self, api):
         self.apis.append(api)
+
 
 class Api:
     def __init__(self, name):
@@ -25,10 +27,12 @@ class Api:
     def addFile(self, file):
         self.files.append(file)
 
+
 class File(object):
     def __init__(self, name, path):
         self.name = name
         self.path = path
+
 
 def post_list(request):
 
@@ -121,4 +125,5 @@ def post_list(request):
     except Exception as inst:
         print(inst)
 
-    return render(request, 'reports.html', {'testPlans': testPlans, 'apiData': apiData})
+    return render(request, 'reports.html',
+                  {'testPlans': testPlans, 'apiData': apiData})

@@ -1,12 +1,11 @@
 import os
 from os.path import dirname
 import time
-from stat import *
+from stat import * # ST_SIZE etc
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib.staticfiles import finders
 import requests
-
 
 API_ENDPOINT = "http://autotesting.ac-visiontech.com:8080/api/v1/projects/1/?format=json"
 
@@ -36,63 +35,94 @@ class File(object):
 
 
 def post_list(request):
+
     response = requests.get(API_ENDPOINT)
     apiData = response.json()
     testPlans = []
 
-    # Se pone bloque try/catch por si no se encuentra la carpeta
-    try:
+    try:  # Se pone bloque try/catch por si no se encuentra el directorio
+
         testPlansNames = os.listdir(settings.STATICFILES_REPORTS_DIR_RESULT)
+
         for testPlanName in testPlansNames:
-            tempTestPlan = TestPlan(testPlanName)
-            filesNames = os.listdir(settings.STATICFILES_REPORTS_DIR_RESULT + "/" + testPlanName) #Carpeta Reportes
+            tempTestPlan = TestPlan(testPlanName);
+            filesNames = os.listdir(settings.STATICFILES_REPORTS_DIR_RESULT + "/" + testPlanName)  # Carpeta Reportes
             for apiName in filesNames:
                 if apiName != "assets":
                     api = Api(apiName)
                     if apiName.endswith("html"):
                         api = Api("Reporte varias Apis")
-                        api.addFile(File("Reporte.html", os.path.join('static/results/reports/' + testPlanName + '/', apiName)))
+                        api.addFile(
+                            File("Reporte.html", os.path.join('static/results/reports/' + testPlanName + '/', apiName)))
                     else:
                         apiRoot = settings.STATICFILES_REPORTS_DIR_RESULT + "/" + testPlanName + "/" + apiName;
                         apisFiles = os.listdir(apiRoot);
                         if apiName != "calabash" and apiName != "stryker":
                             for fileName in apisFiles:
-                                api.addFile(File(fileName, os.path.join('static/results/reports/' + testPlanName + '/' + apiName, fileName)))
+                                api.addFile(File(fileName,
+                                                 os.path.join('static/results/reports/' + testPlanName + '/' + apiName,
+                                                              fileName)))
                         elif apiName == "calabash":
                             for fileName in apisFiles:
-                                for mutantFile in os.listdir(apiRoot + "/" + fileName): #Contienen subdirectorios por mutantes
+                                for mutantFile in os.listdir(
+                                        apiRoot + "/" + fileName):  # Contienen subdirectorios por mutantes
                                     if mutantFile.endswith("html"):
-                                        api.addFile(File("Reporte: " +fileName, os.path.join('static/results/reports/' + testPlanName + '/' + apiName + '/' + fileName, mutantFile)))
+                                        api.addFile(File("Reporte: " + fileName, os.path.join(
+                                            'static/results/reports/' + testPlanName + '/' + apiName + '/' + fileName,
+                                            mutantFile)))
                                     elif mutantFile.endswith("png"):
-                                        api.addFile(File(mutantFile, os.path.join('static/results/reports/' + testPlanName + '/' + apiName + '/' + fileName,mutantFile)))
+                                        api.addFile(File(mutantFile, os.path.join(
+                                            'static/results/reports/' + testPlanName + '/' + apiName + '/' + fileName,
+                                            mutantFile)))
                         elif apiName == "stryker":
-                            for mutantFile in os.listdir(apiRoot + "/mutation/html/"): #Contienen subdirectorios por mutantes
+                            for mutantFile in os.listdir(
+                                    apiRoot + "/mutation/html/"):  # Contienen subdirectorios por mutantes
                                 if mutantFile == "index.html":
-                                    api.addFile(File("mutation.html", os.path.join('static/results/reports/' + testPlanName + '/' + apiName  + "/mutation/html/", mutantFile)))
-                            for coverageFile in os.listdir(apiRoot + "/coverage/"): #Contienen subdirectorios por mutantes
+                                    api.addFile(File("mutation.html", os.path.join(
+                                        'static/results/reports/' + testPlanName + '/' + apiName + "/mutation/html/",
+                                        mutantFile)))
+                            for coverageFile in os.listdir(
+                                    apiRoot + "/coverage/"):  # Contienen subdirectorios por mutantes
                                 if coverageFile == "index.html":
-                                    api.addFile(File("coverage.html", os.path.join('static/results/reports/' + testPlanName + '/' + apiName  + "/coverage", coverageFile)))
+                                    api.addFile(File("coverage.html", os.path.join(
+                                        'static/results/reports/' + testPlanName + '/' + apiName + "/coverage",
+                                        coverageFile)))
                     tempTestPlan.addApi(api)
 
-            # Se pone bloque try/catch por si no se encuentra el plan de pruebas.
-            try:
-                filesNames = os.listdir(
-                    settings.STATICFILES_SCREENSHOTS_DIR_RESULT + "/" + testPlanName)  # Carpeta Screenshots
-                for apiName in filesNames:
-                    api = Api(apiName)
-                    apiRoot = settings.STATICFILES_SCREENSHOTS_DIR_RESULT + "/" + testPlanName + "/" + apiName;
+            testPlans.append(tempTestPlan);
+            print("Test plan: " + testPlanName)
+            print(tempTestPlan.apis)
+            print("\n")
+    except Exception as inst:
+        print("No existe la carpeta reports!")
+
+    try:  # Se pone bloque try/catch por si no se encuentra el plan de pruebas.
+
+        testPlansNames = os.listdir(settings.STATICFILES_SCREENSHOTS_DIR_RESULT)
+        print(testPlansNames)
+        for testPlanName in testPlansNames:
+            tempTestPlan = TestPlan(testPlanName);
+            filesNames = os.listdir(
+                settings.STATICFILES_SCREENSHOTS_DIR_RESULT + "/" + testPlanName)  # Carpeta Screenshots
+            print(filesNames)
+            for apiName in filesNames:
+                api = Api(apiName + " - Screenshots")
+                apiRoot = settings.STATICFILES_SCREENSHOTS_DIR_RESULT + "/" + testPlanName + "/" + apiName;
+                print(apiRoot)
+                print(os.path.isdir(apiRoot))
+                if (os.path.isdir(apiRoot)):
                     apisFiles = os.listdir(apiRoot);
                     for fileName in apisFiles:
-                        api.addFile(File(fileName, os.path.join('static/results/screenshots/' + testPlanName + '/' + apiName, fileName)))
+                        api.addFile(File(fileName,
+                                     os.path.join('static/results/screenshots/' + testPlanName + '/' + apiName,
+                                                  fileName)))
                     tempTestPlan.addApi(api)
-            except Exception as inst:
-                print(inst)
-
-            testPlans.append(tempTestPlan)
+            testPlans.append(tempTestPlan);
             print("Test plan: " + testPlanName)
             print(tempTestPlan.apis)
             print("\n")
     except Exception as inst:
         print(inst)
-    return render(request,
-                  'reports.html', {'testPlans': testPlans, 'apiData': apiData})
+
+    return render(request, 'reports.html',
+                  {'testPlans': testPlans, 'apiData': apiData})
