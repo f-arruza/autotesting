@@ -44,7 +44,7 @@ def post_list(request):
     try:
         testPlansNames = os.listdir(settings.STATICFILES_REPORTS_DIR_RESULT)
         for testPlanName in testPlansNames:
-            tempTestPlan = TestPlan(testPlanName);
+            tempTestPlan = TestPlan(testPlanName)
             filesNames = os.listdir(settings.STATICFILES_REPORTS_DIR_RESULT + "/" + testPlanName) #Carpeta Reportes
             for apiName in filesNames:
                 if apiName != "assets":

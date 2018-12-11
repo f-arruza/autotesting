@@ -1,7 +1,7 @@
 Feature: Create surveys in page
   As an user I want to create my own survey in limesurvey website
 
-  Scenario Outline: Create survey [randomExamples=5]
+  Scenario Outline: Create survey [randomExamples=2]
 
     Given I go to limesurvey login
     And I fill a good username and password
